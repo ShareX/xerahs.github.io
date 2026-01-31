@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-md">
+    <div class="container {% unless page.title %}container-home{% endunless %}">
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span>
+                <i class="fa-solid fa-bars"></i>
+            </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav nav-main mr-auto">
+                <li class="nav-item{% unless page.title %} active{% endunless %}"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item{% if page.title == 'Downloads' %} active{% endif %}">
+                    <a class="nav-link" href="{% if page.url contains '/' %}/downloads{% else %}/downloads{% endif %}">Downloads</a>
+                </li>
+                <li class="nav-item{% if page.title == 'Changelog' %} active{% endif %}">
+                    <a class="nav-link" href="{% if page.url contains '/' %}/changelog{% else %}/changelog{% endif %}">Changelog</a>
+                </li>
+                <li class="nav-item{% if page.title == 'Screenshots' %} active{% endif %}">
+                    <a class="nav-link" href="{% if page.url contains '/' %}/screenshots{% else %}/screenshots{% endif %}">Screenshots</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Other</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/image-effects">Image effects</a>
+                        <a class="dropdown-item" href="/annotation-tools">Annotation tools</a>
+                        <a class="dropdown-item" href="/layers">Multi-layer support</a>
+                        <a class="dropdown-item" href="/workflows">Workflows</a>
+                        <a class="dropdown-item" href="/plugins">Plugins</a>
+                        <a class="dropdown-item" href="/cli">CLI</a>
+                        <a class="dropdown-item" href="/cross-platform">Cross-platform</a>
+                        <a class="dropdown-item" href="/modern-capture">Modern Capture</a>
+                        <a class="dropdown-item" href="https://github.com/topics/sharex">ShareX related projects on GitHub</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav nav-links">
+                <li class="nav-item"><a class="nav-link" href="{{ site.github }}" data-toggle="tooltip" data-placement="bottom" title="GitHub">
+                        <i class="fa-brands fa-github fa-fw"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="https://x.com/{{ site.twitter }}" data-toggle="tooltip" data-placement="bottom" title="X">
+                        <i class="fa-brands fa-x-twitter fa-fw"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="https://discord.gg/ShareX" data-toggle="tooltip" data-placement="bottom" title="Discord">
+                        <i class="fa-brands fa-discord fa-fw"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="https://www.reddit.com/r/sharex" data-toggle="tooltip" data-placement="bottom" title="Reddit">
+                        <i class="fa-brands fa-reddit-alien fa-fw"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,46 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="{% if page.title != "Authorization" %}index, follow{% else %}noindex{% endif %}">
+    <meta name="description" content="{{ site.description }}">
+    <meta name="author" content="{{ site.author }}">
+    <meta name="generator" content="Jekyll v{{ jekyll.version }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% if page.title %}{{ page.title }} - {{ site.name }}{% elsif site.title %}{{ site.title }}{% endif %}</title>
+
+    <script type="application/ld+json">
+    {
+        "@context" : "https://schema.org",
+        "@type" : "WebSite",
+        "name" : "ShareX",
+        "url" : "https://getsharex.com"
+    }
+    </script>
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@{{ site.twitter }}">
+    <meta name="twitter:title" content="{{ site.title }}">
+    <meta name="twitter:description" content="{{ site.description }}">
+    <meta name="twitter:image" content="{{ site.url }}/img/ShareX_Card_Large.png">
+
+    <!-- Open Graph data -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ site.title }}" />
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
+    <meta property="og:image" content="{{ site.url }}/img/ShareX_Card_Large.png" />
+    <meta property="og:description" content="{{ site.description }}" />
+
+    <link rel="icon" href="/favicon.ico">
+
+    <meta name="theme-color" content="#174974">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/fontawesome.all.min.css" rel="stylesheet">
+    <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="/css/main.css?{{ site.time | date: '%s' }}" rel="stylesheet">
+</head>
