@@ -26,7 +26,7 @@ title: Changelog
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
     $(document).ready(function() {
-        const changelogUrl = "https://raw.githubusercontent.com/ShareX/refs/heads/develop/docs/CHANGELOG.md";
+        const changelogUrl = "https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/CHANGELOG.md";
         
         $.get(changelogUrl)
             .done(function(data) {
@@ -34,7 +34,7 @@ title: Changelog
                 $("#changelog-content").html(htmlContent);
             })
             .fail(function() {
-                $("#changelog-content").html('<div class="alert alert-danger">Failed to load changelog from GitHub. <a href="https://github.com/ShareX/blob/develop/docs/CHANGELOG.md" target="_blank">View on GitHub</a></div>');
+                $("#changelog-content").html('<div class="alert alert-danger">Failed to load changelog from GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/CHANGELOG.md" target="_blank">View on GitHub</a></div>');
             });
     });
 </script>
