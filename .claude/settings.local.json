@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(git merge origin/develop -m \"$\\(cat <<''EOF''\nMerge branch ''develop'' into feature/XIP0023-annotation-toolbar-refactor\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(dotnet build:*)",
+      "Bash(git push)"
+    ]
+  }
+}

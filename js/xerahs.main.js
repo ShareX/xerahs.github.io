@@ -1,9 +1,7 @@
 $(document).ready(function() {
     // Only run if we are on the XerahS pages
-    if (window.location.pathname.includes("/xerahs")) {
-        // Trigger immediately or on hover, similar to main site but we want it ready
-        GetLatestXerahsReleaseInfo();
-    }
+    // Trigger immediately or on hover, similar to main site but we want it ready
+    GetLatestXerahsReleaseInfo();
 });
 
 function GetLatestXerahsReleaseInfo() {
