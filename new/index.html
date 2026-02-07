@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XerahS - The Ultimate Screen Capture Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons (minimal usage) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="nav-logo">XerahS</a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#downloads">Download</a>
+                <a href="https://github.com/ShareX/XerahS">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content fade-in-up">
+                <div class="badge">Open Source</div>
+                <h1>Capture.<br>Reimagined.</h1>
+                <p class="hero-subtitle">The most advanced screen capture tool for Windows, macOS, and Linux. Built with modern tech for maximum performance.</p>
+                <div class="cta-group">
+                    <a href="#downloads" class="btn btn-primary">Download Free</a>
+                    <a href="https://github.com/ShareX/XerahS" class="btn btn-secondary">View Source</a>
+                </div>
+            </div>
+            <div class="hero-visual fade-in-up delay-1">
+                <img src="assets/win/main-window.png" alt="XerahS Application Interface" class="app-screenshot">
+                <div class="glow-effect"></div>
+            </div>
+        </section>
+
+        <section id="features" class="bento-grid-section">
+            <div class="section-header fade-in-up">
+                <h2>Power at your fingertips.</h2>
+                <p>Everything you need to capture, edit, and share.</p>
+            </div>
+            
+            <div class="bento-grid">
+                <div class="card card-wide fade-in-up">
+                    <div class="card-content">
+                        <h3>Workflow Automation</h3>
+                        <p>Create complex capture workflows that run automatically.</p>
+                    </div>
+                    <div class="card-visual">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                </div>
+
+                <div class="card fade-in-up delay-1">
+                    <div class="card-content">
+                        <h3>Pixel Perfect</h3>
+                        <p>Region capture with magnifier precision.</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-crop-simple"></i>
+                    </div>
+                </div>
+
+                <div class="card fade-in-up delay-2">
+                    <div class="card-content">
+                        <h3>Cross Platform</h3>
+                        <p>Windows, macOS, Linux.</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fa-brands fa-linux"></i>
+                    </div>
+                </div>
+
+                <div class="card card-tall fade-in-up">
+                    <div class="card-content">
+                        <h3>Powerful Editor</h3>
+                        <p>Annotate screenshots with arrows, text, blurs, and more. Support for multiple layers and non-destructive editing.</p>
+                    </div>
+                    <div class="card-visual-bottom">
+                        <img src="assets/win/editor-main.png" alt="Editor">
+                    </div>
+                </div>
+
+                <div class="card card-wide fade-in-up delay-1">
+                    <div class="card-content">
+                        <h3>Plugin System</h3>
+                        <p>Upload to S3, Google Drive, Dropbox, and Custom Uploaders.</p>
+                    </div>
+                    <div class="card-visual-right">
+                        <i class="fa-solid fa-plug"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="downloads" class="downloads-section">
+            <div class="container fade-in-up">
+                <h2>Get XerahS</h2>
+                <div class="platform-cards">
+                    <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card">
+                        <i class="fa-brands fa-windows"></i>
+                        <span>Windows</span>
+                    </a>
+                    <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card">
+                        <i class="fa-brands fa-apple"></i>
+                        <span>macOS</span>
+                    </a>
+                    <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card">
+                        <i class="fa-brands fa-linux"></i>
+                        <span>Linux</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">Copyright &copy; 2024 ShareX Team</div>
+            <div class="footer-links">
+                <a href="/privacy-policy">Privacy Policy</a>
+                <a href="https://github.com/ShareX/XerahS">GitHub</a>
+                <a href="https://discord.gg/ShareX">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>
