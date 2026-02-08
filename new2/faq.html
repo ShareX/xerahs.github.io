@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Changelog - XerahS</title>
-    <meta name="description" content="XerahS release history and changelog.">
+    <title>FAQ - XerahS</title>
+    <meta name="description" content="Frequently asked questions about XerahS.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,28 +85,28 @@
 
     <main>
         <!-- ═══════════════════════════════════════
-             CHANGELOG HEADER
+             FAQ HEADER
              ═══════════════════════════════════════ -->
         <section class="page-header">
             <div class="container">
                 <div class="page-header-content animate-on-scroll">
-                    <h1 class="page-title gradient-text">Changelog</h1>
-                    <p class="page-subtitle">Track all the updates and improvements to XerahS</p>
+                    <h1 class="page-title gradient-text">FAQ</h1>
+                    <p class="page-subtitle">Frequently asked questions about XerahS</p>
                 </div>
             </div>
         </section>
 
         <!-- ═══════════════════════════════════════
-             CHANGELOG CONTENT
+             FAQ CONTENT
              ═══════════════════════════════════════ -->
-        <section class="changelog-section section-padding">
+        <section class="faq-section section-padding">
             <div class="container container-narrow">
-                <div class="changelog-container card">
+                <div class="faq-container card">
                     <div class="spotlight"></div>
-                    <div class="changelog-content" id="changelog-content">
-                        <div class="changelog-loading">
+                    <div class="faq-content" id="faq-content">
+                        <div class="faq-loading">
                             <i class="fa-solid fa-spinner fa-spin"></i>
-                            <span>Loading changelog...</span>
+                            <span>Loading FAQ...</span>
                         </div>
                     </div>
                 </div>
@@ -203,12 +203,12 @@
         });
 
         // ─────────────────────────────────────────
-        // Fetch and render changelog
+        // Fetch and render FAQ
         // ─────────────────────────────────────────
-        const changelogUrl = 'https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/CHANGELOG.md';
-        const contentEl = document.getElementById('changelog-content');
+        const faqUrl = 'https://raw.githubusercontent.com/ShareX/XerahS/develop/FAQ.md';
+        const contentEl = document.getElementById('faq-content');
 
-        fetch(changelogUrl)
+        fetch(faqUrl)
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch');
                 return response.text();
@@ -220,7 +220,7 @@
                 contentEl.innerHTML = `
                     <div class="error-message">
                         <i class="fa-solid fa-exclamation-circle"></i>
-                        <span>Failed to load changelog. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/CHANGELOG.md" target="_blank">View on GitHub</a></span>
+                        <span>Failed to load FAQ. <a href="https://github.com/ShareX/XerahS/blob/develop/FAQ.md" target="_blank">View on GitHub</a></span>
                     </div>
                 `;
             });
