@@ -433,4 +433,5 @@
             transparent,
             var(--accent-glow),
             transparent);
+    margin-bottom: 32px;
 }
