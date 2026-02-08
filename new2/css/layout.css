@@ -1178,6 +1178,10 @@ footer {
     padding: var(--space-8);
 }
 
+.faq-container:hover {
+    transform: none;
+}
+
 .faq-content {
     position: relative;
     z-index: 2;
