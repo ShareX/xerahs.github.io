@@ -176,7 +176,7 @@
         function getPreferredTheme() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) return savedTheme;
-            return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            return 'light'; // Default to light mode
         }
 
         function setTheme(theme) {

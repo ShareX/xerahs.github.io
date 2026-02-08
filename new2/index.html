@@ -444,13 +444,13 @@
         const themeToggles = document.querySelectorAll('.theme-toggle');
         const html = document.documentElement;
 
-        // Check for saved theme or system preference
+        // Check for saved theme preference
         function getPreferredTheme() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 return savedTheme;
             }
-            return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            return 'light'; // Default to light mode
         }
 
         // Apply theme
