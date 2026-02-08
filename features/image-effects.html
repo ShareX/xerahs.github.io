@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XerahS - Image Effects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="icon" href="../favicon.ico">
+    <style>
+        .feature-content { padding-top: 120px; min-height: 80vh; max-width: 800px; margin: 0 auto; }
+        .feature-content h1 { color: var(--text-primary); font-size: 2.5rem; margin-bottom: 2rem; }
+        .feature-content h2 { color: var(--text-primary); font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; }
+        .feature-content h3 { color: var(--text-primary); font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        .feature-content p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem; }
+        .feature-content ul { color: var(--text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
+        .feature-content li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .feature-content code { background: var(--surface-2); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: var(--text-primary); }
+        .feature-icon { font-size: 3rem; color: var(--primary); margin-bottom: 1rem; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .navbar { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(var(--surface-1-rgb), 0.8); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid var(--surface-border); }
+        footer { padding: 2rem 0; margin-top: 4rem; border-top: 1px solid var(--surface-border); }
+        .theme-toggle { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem; padding: 0.5rem; margin-left: 1rem; }
+        .theme-toggle:hover { color: var(--primary); }
+        
+        .alert { background: var(--surface-2); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-top: 2rem; }
+        .alert-info { border-left-color: #17a2b8; background: rgba(23, 162, 184, 0.1); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo" style="font-weight: 700; font-size: 1.5rem; color: var(--text-primary); text-decoration: none;">XerahS</a>
+            <div class="nav-links" style="display: flex; align-items: center; gap: 2rem;">
+                <a href="../index.html#features" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Features</a>
+                <a href="../screenshots.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Screenshots</a>
+                <a href="../downloads.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Downloads</a>
+                <a href="https://github.com/ShareX/XerahS" class="nav-link" target="_blank" rel="noopener" style="color: var(--text-secondary); text-decoration: none;">GitHub</a>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container feature-content animate-on-scroll">
+            <h1>Image Effects</h1>
+            <p class="lead">XerahS includes a powerful image processing engine that allows you to apply a wide range of effects to your screenshots automatically after capture.</p>
+            
+            <h2 class="mt-4">Effects Library</h2>
+            <p>Effects are categorized into three main groups:</p>
+
+            <div class="feature-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 1rem;">
+                <div>
+                    <h3><i class="fas fa-magic"></i> Manipulations</h3>
+                    <ul>
+                        <li><strong>Resize:</strong> Scale images by percentage or specific dimensions.</li>
+                        <li><strong>Rotate:</strong> Rotate by 90, 180, 270 degrees or custom angles.</li>
+                        <li><strong>Flip:</strong> Flip horizontally or vertically.</li>
+                        <li><strong>Skew:</strong> Apply perspective skewing.</li>
+                        <li><strong>Auto Crop:</strong> Automatically remove transparent or solid color borders.</li>
+                        <li><strong>Rounded Corners:</strong> Add rounded corners with customizable radius.</li>
+                        <li><strong>Rotate 3D:</strong> Apply 3D rotation transformations.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3><i class="fas fa-adjust"></i> Adjustments</h3>
+                    <ul>
+                        <li><strong>Brightness/Contrast:</strong> Adjust luminance and tonal range.</li>
+                        <li><strong>Gamma:</strong> Correct gamma levels.</li>
+                        <li><strong>Hue/Saturation:</strong> Shift colors and adjust intensity.</li>
+                        <li><strong>Grayscale:</strong> Convert to black and white.</li>
+                        <li><strong>Sepia:</strong> Apply a vintage tone.</li>
+                        <li><strong>Invert:</strong> Invert colors.</li>
+                        <li><strong>Colorize:</strong> Tint the image with a specific color.</li>
+                        <li><strong>Replace Color:</strong> Swap one color for another.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    <ul>
+                        <li><strong>Blur:</strong> Gaussian blur for privacy or aesthetics.</li>
+                        <li><strong>Pixelate:</strong> Obfuscate sensitive information.</li>
+                        <li><strong>Sharpen:</strong> Enhance edge detail.</li>
+                        <li><strong>Border:</strong> Add solid or gradient borders.</li>
+                        <li><strong>Shadow:</strong> Add drop shadows.</li>
+                        <li><strong>Reflection:</strong> Create a mirrored reflection.</li>
+                        <li><strong>Glow:</strong> Add an outer glow effect.</li>
+                        <li><strong>Torn Edge:</strong> Simulate a torn paper edge.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="mt-5">Import / Export</h2>
+            <p>XerahS allows you to share your custom effect configurations or back them up.</p>
+            
+            <div class="alert alert-info">
+                <strong><i class="fas fa-file-import"></i> Legacy Support:</strong> XerahS includes a legacy importer that can read existing ShareX image effect files (<code>.sxie</code>), allowing for a seamless migration of your favorite presets.
+            </div>
+
+            <ul class="mt-4">
+                <li><strong>Export:</strong> Save your current effect chain to a JSON-based format for sharing.</li>
+                <li><strong>Import:</strong> Load presets created by the community or from previous backups.</li>
+            </ul>
+
+            <div class="mt-5">
+                <a class="btn" href="../index.html" style="display: inline-block; background: var(--primary); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Back to Home</a>
+            </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center;">
+            <span style="color: var(--text-tertiary);">© 2024 ShareX Team. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                html.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            setTheme(current === 'light' ? 'dark' : 'light');
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

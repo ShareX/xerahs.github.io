@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XerahS - Cross-Platform Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="icon" href="../favicon.ico">
+    <style>
+        .feature-content { padding-top: 120px; min-height: 80vh; max-width: 800px; margin: 0 auto; }
+        .feature-content h1 { color: var(--text-primary); font-size: 2.5rem; margin-bottom: 2rem; }
+        .feature-content h2 { color: var(--text-primary); font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; }
+        .feature-content h3 { color: var(--text-primary); font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        .feature-content p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem; }
+        .feature-content ul { color: var(--text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
+        .feature-content li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .feature-content code { background: var(--surface-2); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: var(--text-primary); }
+        .feature-icon { font-size: 3rem; color: var(--primary); margin-bottom: 1rem; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .navbar { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(var(--surface-1-rgb), 0.8); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid var(--surface-border); }
+        footer { padding: 2rem 0; margin-top: 4rem; border-top: 1px solid var(--surface-border); }
+        .theme-toggle { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem; padding: 0.5rem; margin-left: 1rem; }
+        .theme-toggle:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo" style="font-weight: 700; font-size: 1.5rem; color: var(--text-primary); text-decoration: none;">XerahS</a>
+            <div class="nav-links" style="display: flex; align-items: center; gap: 2rem;">
+                <a href="../index.html#features" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Features</a>
+                <a href="../screenshots.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Screenshots</a>
+                <a href="../downloads.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Downloads</a>
+                <a href="https://github.com/ShareX/XerahS" class="nav-link" target="_blank" rel="noopener" style="color: var(--text-secondary); text-decoration: none;">GitHub</a>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container feature-content animate-on-scroll">
+            <h1>Platform Abstraction Layer</h1>
+            <p class="lead">XerahS is built on a strict "Core / Platform" separation model, ensuring that the business logic remains purely cross-platform while leveraging native capabilities on each OS.</p>
+            
+            <h2 class="mt-4">Architecture Overview</h2>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h3><i class="fas fa-layer-group"></i> Core (Platform Agnostic)</h3>
+                    <p>The <code>XerahS.Core</code> and <code>XerahS.Common</code> libraries contain 100% of the application logic but have zero dependencies on Windows Forms, WPF, or any OS-specific APIs. They communicate with the OS exclusively through abstract interfaces defined in <code>XerahS.Platform.Abstractions</code>.</p>
+                </div>
+                <div class="col-md-6">
+                    <h3><i class="fas fa-desktop"></i> Platform Implementations</h3>
+                    <p>Specific projects (<code>XerahS.Platform.Windows</code>, <code>.Linux</code>, <code>.MacOS</code>) implement these interfaces using native APIs (Win32/WinRT, X11/Wayland/DBus, Cocoa/ScreenCaptureKit) and are injected at runtime.</p>
+                </div>
+            </div>
+
+            <h2 class="mt-5">Supported Platforms</h2>
+            
+            <h3 class="mt-4"><i class="fab fa-windows"></i> Windows</h3>
+            <p>On Windows, XerahS utilizes a hybrid of modern <strong>WinRT</strong> APIs (for high-performance capture) and traditional <strong>Win32</strong> (for low-level window management). It fully supports Windows 10 and 11, including dark mode integration and toast notifications.</p>
+
+            <h3 class="mt-4"><i class="fab fa-linux"></i> Linux</h3>
+            <p>The Linux implementation favors modern standards while maintaining broad compatibility:</p>
+            <ul>
+                <li><strong>Wayland Support:</strong> Uses XDG Desktop Portals and DBus for screen capture and global shortcuts, ensuring compatibility with GNOME and KDE Plasma.</li>
+                <li><strong>X11 Fallback:</strong> Retains support for legacy X11 environments using XLib and XExtensions.</li>
+                <li><strong>AppImage:</strong> Distributed as a single AppImage for easy deployment across distros.</li>
+            </ul>
+
+            <h3 class="mt-4"><i class="fab fa-apple"></i> macOS</h3>
+            <p>XerahS wraps native macOS frameworks to provide a seamless experience:</p>
+            <ul>
+                <li><strong>ScreenCaptureKit:</strong> High-performance, low-overhead screen recording on macOS Monterey and newer.</li>
+                <li><strong>Cocoa Interop:</strong> Native window management and menu bar integration.</li>
+                <li><strong>Universal Binary:</strong> Optimization for both Apple Silicon and Intel Macs.</li>
+            </ul>
+
+            <div class="alert alert-info mt-4" role="alert" style="background: var(--surface-2); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                <strong>Avalonia UI:</strong> The user interface is built with Avalonia UI, providing a pixel-perfect, hardware-accelerated experience that looks consistent across all operating systems.
+            </div>
+
+            <div class="mt-5">
+                <a class="btn" href="../index.html" style="display: inline-block; background: var(--primary); color: white; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Back to Home</a>
+            </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center;">
+            <span style="color: var(--text-tertiary);">© 2024 ShareX Team. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                html.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            setTheme(current === 'light' ? 'dark' : 'light');
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
