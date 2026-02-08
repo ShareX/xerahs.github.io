@@ -41,7 +41,50 @@
         <div class="grid-overlay"></div>
     </div>
 
-    {% include new2-navbar.html %}
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         ═══════════════════════════════════════ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">XerahS</a>
+
+            <div class="nav-links">
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="screenshots.html" class="nav-link">Screenshots</a>
+                <a href="downloads.html" class="nav-link">Downloads</a>
+                <a href="changelog.html" class="nav-link">Changelog</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="https://github.com/ShareX/XerahS" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+            </div>
+
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="nav-mobile">
+            <div class="nav-mobile-links">
+                <a href="index.html#features" class="nav-mobile-link">Features</a>
+                <a href="screenshots.html" class="nav-mobile-link">Screenshots</a>
+                <a href="downloads.html" class="nav-mobile-link">Downloads</a>
+                <a href="changelog.html" class="nav-mobile-link">Changelog</a>
+                <a href="faq.html" class="nav-mobile-link">FAQ</a>
+                <a href="https://github.com/ShareX/XerahS" class="nav-mobile-link" target="_blank" rel="noopener">GitHub</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+                <a href="downloads.html" class="btn btn-primary nav-mobile-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
 
     <main>
         <!-- ═══════════════════════════════════════
@@ -120,9 +163,9 @@
                             <div class="card-icon">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                             </div>
-                            <h3 class="card-title">Workflow Automation</h3>
+                            <h3 class="card-title">Dedicated Workflows</h3>
                             <p class="card-description">
-                                Create complex capture workflows that run automatically.
+                                Optimize your productivity with highly customizable, hotkey-driven workflows.
                             </p>
                         </div>
                     </a>
@@ -134,9 +177,9 @@
                             <div class="card-icon">
                                 <i class="fa-solid fa-crosshairs"></i>
                             </div>
-                            <h3 class="card-title">Pixel Perfect</h3>
+                            <h3 class="card-title">Modern Screen Capture</h3>
                             <p class="card-description">
-                                Region capture with magnifier precision.
+                                Region capture with magnifier precision. Pixel perfect results every time.
                             </p>
                         </div>
                     </a>
@@ -148,10 +191,10 @@
                             <div class="card-icon">
                                 <i class="fa-solid fa-pen-ruler"></i>
                             </div>
-                            <h3 class="card-title">Powerful Editor</h3>
+                            <h3 class="card-title">Annotation Tools</h3>
                             <p class="card-description">
                                 Annotate screenshots with arrows, text, blurs, and more.
-                                Support for multiple layers and non-destructive editing.
+                                Express your ideas clearly and concisely.
                             </p>
                         </div>
                     </a>
@@ -163,9 +206,9 @@
                             <div class="card-icon">
                                 <i class="fa-solid fa-plug"></i>
                             </div>
-                            <h3 class="card-title">Plugin System</h3>
+                            <h3 class="card-title">Plugin-based Destinations</h3>
                             <p class="card-description">
-                                Upload to S3, Google Drive, Dropbox, and more.
+                                Modular architecture. Upload to S3, Google Drive, Dropbox, and more.
                             </p>
                         </div>
                     </a>
@@ -177,26 +220,26 @@
                             <div class="card-icon">
                                 <i class="fa-solid fa-terminal"></i>
                             </div>
-                            <h3 class="card-title">CLI Support</h3>
+                            <h3 class="card-title">Command Line Interface</h3>
                             <p class="card-description">
-                                Full command-line interface for automation and scripting.
+                                Automate screen capture and recording directly from your terminal.
                             </p>
                         </div>
                     </a>
 
-                    <!-- Lightweight -->
-                    <div class="card card-span-2 animate-on-scroll delay-3">
+                    <!-- Multi-layer Support -->
+                    <a href="features/layers.html" class="card card-span-2 animate-on-scroll delay-3" style="text-decoration: none; color: inherit;">
                         <div class="spotlight"></div>
                         <div class="card-content">
                             <div class="card-icon">
-                                <i class="fa-solid fa-feather"></i>
+                                <i class="fa-solid fa-layer-group"></i>
                             </div>
-                            <h3 class="card-title">Lightweight</h3>
+                            <h3 class="card-title">Multi-layer Support</h3>
                             <p class="card-description">
-                                Fast startup and minimal resource usage.
+                                Non-destructive editing. Move, resize, and edit objects at any time.
                             </p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Image Effects -->
                     <a href="features/image-effects.html" class="card card-span-2 animate-on-scroll delay-4" style="text-decoration: none; color: inherit;">
@@ -278,7 +321,47 @@
         </section>
     </main>
 
-    {% include new2-footer.html %}
+    <!-- ═══════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════ -->
+    <footer>
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <h2 class="section-title">Join the Community</h2>
+                <p class="section-subtitle">Connect with developers, get help, and stay updated</p>
+            </div>
+            <div class="footer-social">
+                <a href="https://github.com/ShareX/XerahS" class="footer-social-card btn btn-secondary" target="_blank"
+                    rel="noopener">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://x.com/ShareX" class="footer-social-card btn btn-secondary" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <span>X</span>
+                </a>
+                <a href="https://discord.gg/ShareX" class="footer-social-card btn btn-secondary" target="_blank"
+                    rel="noopener">
+                    <i class="fa-brands fa-discord"></i>
+                    <span>Discord</span>
+                </a>
+                <a href="https://www.reddit.com/r/sharex" class="footer-social-card btn btn-secondary" target="_blank"
+                    rel="noopener">
+                    <i class="fa-brands fa-reddit-alien"></i>
+                    <span>Reddit</span>
+                </a>
+            </div>
+        </div>
+        <div class="section-divider-accent"></div>
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-copyright">© 2024 ShareX Team. All rights reserved.</span>
+                <div class="footer-links">
+                    <a href="privacy-policy" class="footer-link">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- ═══════════════════════════════════════
          SCRIPTS
