@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloads - XerahS</title>
+    <meta name="description" content="Download XerahS releases for Windows, macOS, and Linux.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+
+    <link rel="icon" href="../favicon.ico">
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════
+         BACKGROUND SYSTEM
+         ═══════════════════════════════════════ -->
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         ═══════════════════════════════════════ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">XerahS</a>
+
+            <div class="nav-links">
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="downloads.html" class="nav-link">Downloads</a>
+                <a href="changelog.html" class="nav-link">Changelog</a>
+                <a href="https://github.com/ShareX/XerahS" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+            </div>
+
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="nav-mobile">
+            <div class="nav-mobile-links">
+                <a href="index.html#features" class="nav-mobile-link">Features</a>
+                <a href="downloads.html" class="nav-mobile-link">Downloads</a>
+                <a href="changelog.html" class="nav-mobile-link">Changelog</a>
+                <a href="https://github.com/ShareX/XerahS" class="nav-mobile-link" target="_blank"
+                    rel="noopener">GitHub</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ═══════════════════════════════════════
+             DOWNLOADS HEADER
+             ═══════════════════════════════════════ -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content animate-on-scroll">
+                    <h1 class="page-title gradient-text">Downloads</h1>
+                    <p class="page-subtitle">Get the latest XerahS releases for your platform</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             TOTAL DOWNLOADS STATS
+             ═══════════════════════════════════════ -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-card card animate-on-scroll">
+                    <div class="spotlight"></div>
+                    <div class="stats-content">
+                        <div class="stats-icon">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                        <div class="stats-info">
+                            <span class="stats-label">Total Downloads</span>
+                            <span class="stats-value total-downloads-value">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             RELEASES TABLE
+             ═══════════════════════════════════════ -->
+        <section class="releases-section section-padding">
+            <div class="container">
+                <div class="releases-container">
+                    <div class="releases-loading" id="releases-loading">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <span>Loading releases...</span>
+                    </div>
+                    <div class="releases-list" id="releases-list"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ═══════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════ -->
+    <footer>
+        <div class="section-divider-accent"></div>
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-copyright">© 2024 ShareX Team. All rights reserved.</span>
+                <div class="footer-links">
+                    <a href="../privacy-policy" class="footer-link">Privacy Policy</a>
+                    <a href="https://github.com/ShareX/XerahS" class="footer-link" target="_blank"
+                        rel="noopener">GitHub</a>
+                    <a href="https://discord.gg/ShareX" class="footer-link" target="_blank" rel="noopener">Discord</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script>
+        // ─────────────────────────────────────────
+        // Scroll-triggered animations
+        // ─────────────────────────────────────────
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ─────────────────────────────────────────
+        // Mobile menu toggle
+        // ─────────────────────────────────────────
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMobile = document.querySelector('.nav-mobile');
+
+        navToggle.addEventListener('click', () => {
+            const isActive = navToggle.classList.toggle('active');
+            navMobile.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isActive);
+        });
+
+        // ─────────────────────────────────────────
+        // Theme toggle functionality
+        // ─────────────────────────────────────────
+        const themeToggles = document.querySelectorAll('.theme-toggle');
+        const html = document.documentElement;
+
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(getPreferredTheme());
+
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        });
+
+        // ─────────────────────────────────────────
+        // Fetch releases from GitHub
+        // ─────────────────────────────────────────
+        const repo = 'ShareX/XerahS';
+
+        async function fetchReleases() {
+            const loadingEl = document.getElementById('releases-loading');
+            const listEl = document.getElementById('releases-list');
+            const totalEl = document.querySelector('.total-downloads-value');
+
+            try {
+                let allReleases = [];
+                let page = 1;
+                const perPage = 100;
+
+                while (true) {
+                    const response = await fetch(
+                        `https://api.github.com/repos/${repo}/releases?per_page=${perPage}&page=${page}`
+                    );
+                    if (!response.ok) throw new Error('Failed to fetch');
+
+                    const releases = await response.json();
+                    if (!Array.isArray(releases) || releases.length === 0) break;
+
+                    allReleases = allReleases.concat(releases);
+                    if (releases.length < perPage) break;
+                    page++;
+                }
+
+                // Sort by date
+                allReleases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+
+                let totalDownloads = 0;
+                let previousDate = new Date();
+                let html = '';
+
+                allReleases.forEach((release, index) => {
+                    if (release.assets.length === 0) return;
+
+                    const releaseDownloads = release.assets.reduce((sum, a) => sum + a.download_count, 0);
+                    totalDownloads += releaseDownloads;
+
+                    const publishedDate = new Date(release.published_at);
+                    const activeDays = ((previousDate - publishedDate) / (1000 * 60 * 60 * 24)).toFixed(1);
+                    previousDate = publishedDate;
+
+                    const isLatest = index === 0;
+                    const isPrerelease = release.prerelease;
+
+                    html += `
+                        <div class="release-card card">
+                            <div class="spotlight"></div>
+                            <div class="release-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                <div class="release-info">
+                                    <div class="release-title-row">
+                                        <h3 class="release-name">${escapeHtml(release.name)}</h3>
+                                        <div class="release-badges">
+                                            ${isLatest ? '<span class="release-badge release-badge-latest">Latest</span>' : ''}
+                                            ${isPrerelease ? '<span class="release-badge release-badge-prerelease">Pre-release</span>' : ''}
+                                        </div>
+                                    </div>
+                                    <div class="release-meta">
+                                        <span class="release-tag"><i class="fa-solid fa-tag"></i> ${escapeHtml(release.tag_name)}</span>
+                                        <span class="release-date"><i class="fa-solid fa-calendar"></i> ${publishedDate.toLocaleDateString('en-CA')}</span>
+                                        <span class="release-days"><i class="fa-solid fa-clock"></i> ${activeDays} days</span>
+                                        <span class="release-downloads"><i class="fa-solid fa-download"></i> ${releaseDownloads.toLocaleString()}</span>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-down release-expand-icon"></i>
+                            </div>
+                            <div class="release-assets">
+                                ${release.assets.sort((a, b) => b.download_count - a.download_count).map(asset => `
+                                    <a href="${asset.browser_download_url}" class="asset-item">
+                                        <span class="asset-name"><i class="fa-solid fa-file"></i> ${escapeHtml(asset.name)}</span>
+                                        <div class="asset-meta">
+                                            <span class="asset-size">${formatBytes(asset.size)}</span>
+                                            <span class="asset-downloads"><i class="fa-solid fa-download"></i> ${asset.download_count.toLocaleString()}</span>
+                                        </div>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                totalEl.textContent = totalDownloads.toLocaleString();
+                listEl.innerHTML = html;
+                loadingEl.style.display = 'none';
+
+            } catch (error) {
+                loadingEl.innerHTML = `
+                    <div class="error-message">
+                        <i class="fa-solid fa-exclamation-circle"></i>
+                        <span>Failed to load releases. <a href="https://github.com/${repo}/releases" target="_blank">View on GitHub</a></span>
+                    </div>
+                `;
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        fetchReleases();
+    </script>
+</body>
+
+</html>
