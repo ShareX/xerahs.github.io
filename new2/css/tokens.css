@@ -1,0 +1,121 @@
+/* ============================================
+   XerahS Design Tokens - Linear/Modern Style
+   ============================================ */
+
+:root {
+    /* ─────────────────────────────────────────
+       COLOR SYSTEM: Deep Space with Ambient Light
+       ───────────────────────────────────────── */
+    
+    /* Backgrounds - Never pure black */
+    --background-deep: #020203;
+    --background-base: #050506;
+    --background-elevated: #0a0a0c;
+    
+    /* Surfaces */
+    --surface: rgba(255, 255, 255, 0.05);
+    --surface-hover: rgba(255, 255, 255, 0.08);
+    --surface-active: rgba(255, 255, 255, 0.12);
+    
+    /* Foreground */
+    --foreground: #EDEDEF;
+    --foreground-muted: #8A8F98;
+    --foreground-subtle: rgba(255, 255, 255, 0.60);
+    
+    /* Accent - Indigo */
+    --accent: #5E6AD2;
+    --accent-bright: #6872D9;
+    --accent-glow: rgba(94, 106, 210, 0.3);
+    --accent-glow-soft: rgba(94, 106, 210, 0.15);
+    
+    /* Borders */
+    --border-default: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.10);
+    --border-accent: rgba(94, 106, 210, 0.30);
+    
+    /* ─────────────────────────────────────────
+       TYPOGRAPHY
+       ───────────────────────────────────────── */
+    --font-sans: "Inter", "Geist Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+    
+    /* Font Weights */
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    
+    /* Tracking */
+    --tracking-tighter: -0.03em;
+    --tracking-tight: -0.02em;
+    --tracking-wide: 0.05em;
+    
+    /* ─────────────────────────────────────────
+       SPACING (4px base unit)
+       ───────────────────────────────────────── */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+    --space-32: 128px;
+    
+    /* ─────────────────────────────────────────
+       RADII
+       ───────────────────────────────────────── */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
+    --radius-full: 9999px;
+    
+    /* ─────────────────────────────────────────
+       SHADOWS (Multi-layer system)
+       ───────────────────────────────────────── */
+    
+    /* Card shadows */
+    --shadow-card: 
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 2px 20px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(0, 0, 0, 0.2);
+    
+    --shadow-card-hover: 
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 8px 40px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(94, 106, 210, 0.1);
+    
+    /* Button shadows */
+    --shadow-button-primary: 
+        0 0 0 1px rgba(94, 106, 210, 0.5),
+        0 4px 12px rgba(94, 106, 210, 0.3),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    
+    --shadow-button-primary-hover:
+        0 0 0 1px rgba(94, 106, 210, 0.6),
+        0 8px 24px rgba(94, 106, 210, 0.4),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+    
+    --shadow-inner-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    
+    /* ─────────────────────────────────────────
+       TRANSITIONS
+       ───────────────────────────────────────── */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 200ms;
+    --duration-normal: 300ms;
+    --duration-slow: 600ms;
+    
+    /* ─────────────────────────────────────────
+       LAYOUT
+       ───────────────────────────────────────── */
+    --container-max: 1200px;
+    --container-narrow: 900px;
+    --nav-height: 64px;
+}

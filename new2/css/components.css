@@ -1,0 +1,436 @@
+/* ============================================
+   XerahS Components - Linear/Modern Style
+   ============================================ */
+
+/* ─────────────────────────────────────────
+   BUTTONS
+   ───────────────────────────────────────── */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: var(--font-medium);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition:
+        background-color var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out);
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 2px var(--background-base),
+        0 0 0 4px rgba(94, 106, 210, 0.5);
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    box-shadow: var(--shadow-button-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-bright);
+    box-shadow: var(--shadow-button-primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-button-primary);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: var(--surface);
+    color: var(--foreground);
+    box-shadow: var(--shadow-inner-highlight);
+}
+
+.btn-secondary:hover {
+    background-color: var(--surface-hover);
+    box-shadow:
+        var(--shadow-inner-highlight),
+        0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    transform: scale(0.98);
+}
+
+/* Ghost Button */
+.btn-ghost {
+    background-color: transparent;
+    color: var(--foreground-muted);
+}
+
+.btn-ghost:hover {
+    background-color: var(--surface);
+    color: var(--foreground);
+}
+
+/* ─────────────────────────────────────────
+   CARDS
+   ───────────────────────────────────────── */
+
+.card {
+    position: relative;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    overflow: hidden;
+    transition:
+        transform var(--duration-normal) var(--ease-out),
+        box-shadow var(--duration-normal) var(--ease-out),
+        border-color var(--duration-normal) var(--ease-out);
+    box-shadow: var(--shadow-card);
+}
+
+/* Top edge highlight */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(to right,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--border-hover);
+}
+
+/* Card spotlight effect (mouse tracking via JS) */
+.card .spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out);
+    background: radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            var(--accent-glow-soft),
+            transparent 60%);
+}
+
+.card:hover .spotlight {
+    opacity: 1;
+}
+
+/* Card content */
+.card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: var(--font-semibold);
+    color: var(--foreground);
+    margin-bottom: var(--space-2);
+    letter-spacing: var(--tracking-tight);
+}
+
+.card-description {
+    font-size: 0.9375rem;
+    color: var(--foreground-muted);
+    line-height: 1.6;
+}
+
+.card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--border-default);
+    margin-bottom: var(--space-4);
+    color: var(--accent);
+    font-size: 1.25rem;
+}
+
+/* ─────────────────────────────────────────
+   BADGE / PILL
+   ───────────────────────────────────────── */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(94, 106, 210, 0.1);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-full);
+}
+
+/* ─────────────────────────────────────────
+   NAVBAR
+   ───────────────────────────────────────── */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: rgba(5, 5, 6, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border-default);
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: var(--container-max);
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    font-size: 1.125rem;
+    font-weight: var(--font-semibold);
+    color: var(--foreground);
+    text-decoration: none;
+    letter-spacing: var(--tracking-tight);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+}
+
+.nav-link {
+    font-size: 0.875rem;
+    color: var(--foreground-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav-link:hover {
+    color: var(--foreground);
+}
+
+.nav-cta {
+    margin-left: var(--space-4);
+}
+
+/* Mobile Menu Toggle */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--foreground);
+    border-radius: 1px;
+    transition:
+        transform var(--duration-fast) var(--ease-out),
+        opacity var(--duration-fast) var(--ease-out);
+}
+
+.nav-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Menu */
+.nav-mobile {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(5, 5, 6, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-default);
+    padding: var(--space-6);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition:
+        opacity var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out),
+        visibility var(--duration-fast);
+}
+
+.nav-mobile.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.nav-mobile-link {
+    font-size: 1rem;
+    color: var(--foreground-muted);
+    text-decoration: none;
+    padding: var(--space-2) 0;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav-mobile-link:hover {
+    color: var(--foreground);
+}
+
+.nav-mobile-cta {
+    margin-top: var(--space-4);
+    width: 100%;
+}
+
+/* ─────────────────────────────────────────
+   PLATFORM CARDS
+   ───────────────────────────────────────── */
+
+.platform-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    background: var(--background-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    transition:
+        transform var(--duration-normal) var(--ease-out),
+        border-color var(--duration-normal) var(--ease-out),
+        box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.platform-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-accent);
+    box-shadow: 0 8px 40px rgba(94, 106, 210, 0.15);
+}
+
+.platform-card-icon {
+    font-size: 2.5rem;
+    color: var(--foreground);
+}
+
+.platform-card-name {
+    font-size: 1.125rem;
+    font-weight: var(--font-semibold);
+    color: var(--foreground);
+}
+
+.platform-card-versions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.platform-card-version {
+    font-size: 0.8125rem;
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.platform-card-version:hover {
+    color: var(--accent-bright);
+    text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────
+   GRADIENT TEXT
+   ───────────────────────────────────────── */
+
+.gradient-text {
+    background: linear-gradient(to bottom,
+            #ffffff 0%,
+            rgba(255, 255, 255, 0.95) 50%,
+            rgba(255, 255, 255, 0.70) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-accent {
+    background: linear-gradient(90deg,
+            var(--accent) 0%,
+            #818cf8 50%,
+            var(--accent) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────
+   SECTION DIVIDERS
+   ───────────────────────────────────────── */
+
+.section-divider {
+    height: 1px;
+    background: linear-gradient(to right,
+            transparent,
+            var(--border-default),
+            transparent);
+    margin: var(--space-16) 0;
+}
+
+.section-divider-accent {
+    height: 1px;
+    background: linear-gradient(to right,
+            transparent,
+            var(--accent-glow),
+            transparent);
+}
