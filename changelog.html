@@ -1,41 +1,176 @@
 ---
-layout: default
-title: Changelog
 ---
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="jumbotron jumbotron-compact">
-    <div class="container">
-        <h1>
-            <a href="/">XerahS</a>
-        </h1>
-        <p>Changelog</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - XerahS</title>
+    <meta name="description" content="XerahS release history and changelog.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+
+    <link rel="icon" href="../favicon.ico">
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════
+         BACKGROUND SYSTEM
+         ═══════════════════════════════════════ -->
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="changelog-content">
-                <p class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i><br>Loading changelog...</p>
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         ═══════════════════════════════════════ -->
+    {% include new2-navbar.html %}
+
+    <main>
+        <!-- ═══════════════════════════════════════
+             CHANGELOG HEADER
+             ═══════════════════════════════════════ -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content animate-on-scroll">
+                    <h1 class="page-title gradient-text">Changelog</h1>
+                    <p class="page-subtitle">Track all the updates and improvements to XerahS</p>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+        </section>
 
-{% include common-js.html %}
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-    $(document).ready(function() {
-        const changelogUrl = "https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/CHANGELOG.md";
-        
-        $.get(changelogUrl)
-            .done(function(data) {
-                const htmlContent = marked.parse(data);
-                $("#changelog-content").html(htmlContent);
-            })
-            .fail(function() {
-                $("#changelog-content").html('<div class="alert alert-danger">Failed to load changelog from GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/CHANGELOG.md" target="_blank">View on GitHub</a></div>');
+        <!-- ═══════════════════════════════════════
+             CHANGELOG CONTENT
+             ═══════════════════════════════════════ -->
+        <section class="changelog-section section-padding">
+            <div class="container container-narrow">
+                <div class="changelog-container card">
+                    <div class="spotlight"></div>
+                    <div class="changelog-content" id="changelog-content">
+                        <div class="changelog-loading">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <span>Loading changelog...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include new2-footer.html %}
+
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script>
+        // ─────────────────────────────────────────
+        // Scroll-triggered animations
+        // ─────────────────────────────────────────
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
-    });
-</script>
+        }, observerOptions);
 
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ─────────────────────────────────────────
+        // Mobile menu toggle
+        // ─────────────────────────────────────────
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMobile = document.querySelector('.nav-mobile');
+
+        navToggle.addEventListener('click', () => {
+            const isActive = navToggle.classList.toggle('active');
+            navMobile.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isActive);
+        });
+
+        // ─────────────────────────────────────────
+        // Theme toggle functionality
+        // ─────────────────────────────────────────
+        const themeToggles = document.querySelectorAll('.theme-toggle');
+        const html = document.documentElement;
+
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return 'light'; // Default to light mode
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(getPreferredTheme());
+
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        });
+
+        // ─────────────────────────────────────────
+        // Fetch and render changelog
+        // ─────────────────────────────────────────
+        const changelogUrl = 'https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/CHANGELOG.md';
+        const contentEl = document.getElementById('changelog-content');
+
+        fetch(changelogUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch');
+                return response.text();
+            })
+            .then(markdown => {
+                contentEl.innerHTML = marked.parse(markdown);
+            })
+            .catch(error => {
+                contentEl.innerHTML = `
+                    <div class="error-message">
+                        <i class="fa-solid fa-exclamation-circle"></i>
+                        <span>Failed to load changelog. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/CHANGELOG.md" target="_blank">View on GitHub</a></span>
+                    </div>
+                `;
+            });
+    </script>
+</body>
+
+</html>

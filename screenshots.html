@@ -1,113 +1,261 @@
 ---
-layout: default
-title: Screenshots
 ---
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="jumbotron jumbotron-compact">
-    <div class="container">
-        <h1>
-            <a href="/">XerahS</a>
-        </h1>
-        <p>Screenshots</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshots - XerahS</title>
+    <meta name="description" content="XerahS screenshots across Windows, macOS, and Linux platforms.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+
+    <!-- Fancybox for lightbox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css">
+
+    <link rel="icon" href="../favicon.ico">
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════
+         BACKGROUND SYSTEM
+         ═══════════════════════════════════════ -->
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
     </div>
-</div>
 
-<div class="container-screenshots">
-    <div class="container">
-        <h3><i class="fa-brands fa-windows"></i> Windows</h3>
-        <div class="row">
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Main Window" href="/img/win/main-window.png">
-                    <img src="/img/win/main-window.png" alt="Main Window">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Workflows" href="/img/win/workflows-list.png">
-                    <img src="/img/win/workflows-list.png" alt="Workflows">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Application Settings" href="/img/win/settings-general.png">
-                    <img src="/img/win/settings-general.png" alt="Application Settings">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Workflow Editor" href="/img/win/workflow-editor.png">
-                    <img src="/img/win/workflow-editor.png" alt="Workflow Editor">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Destinations" href="/img/win/destinations.png">
-                    <img src="/img/win/destinations.png" alt="Destinations">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Color Picker" href="/img/win/color-picker.png">
-                    <img src="/img/win/color-picker.png" alt="Color Picker">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Editor View" href="/img/win/editor-main.png">
-                    <img src="/img/win/editor-main.png" alt="Editor View">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Image Effects" href="/img/win/editor-effects.png">
-                    <img src="/img/win/editor-effects.png" alt="Image Effects">
-                </a>
-            </div>
-        </div>
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         ═══════════════════════════════════════ -->
+    {% include new2-navbar.html %}
 
-        <h3 class="mt-4"><i class="fa-brands fa-apple"></i> macOS</h3>
-        <div class="row">
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Main Window - macOS" href="/img/macos/main-window.png">
-                    <img src="/img/macos/main-window.png" alt="Main Window - macOS">
-                </a>
+    <main>
+        <!-- ═══════════════════════════════════════
+             SCREENSHOTS HEADER
+             ═══════════════════════════════════════ -->
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content animate-on-scroll">
+                    <h1 class="page-title gradient-text">Screenshots</h1>
+                    <p class="page-subtitle">See XerahS in action across all platforms</p>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Workflows - macOS" href="/img/macos/workflows-list.png">
-                    <img src="/img/macos/workflows-list.png" alt="Workflows - macOS">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Index Folder - macOS" href="/img/macos/index-folder.png">
-                    <img src="/img/macos/index-folder.png" alt="Index Folder - macOS">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Workflow Editor - macOS" href="/img/macos/workflow-editor.png">
-                    <img src="/img/macos/workflow-editor.png" alt="Workflow Editor - macOS">
-                </a>
-            </div>
-        </div>
+        </section>
 
-        <h3 class="mt-4"><i class="fa-brands fa-linux"></i> Linux</h3>
-        <div class="row">
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Main Window - Linux" href="/img/linux/main-window.png">
-                    <img src="/img/linux/main-window.png" alt="Main Window - Linux">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Workflows - Linux" href="/img/linux/workflows-list.png">
-                    <img src="/img/linux/workflows-list.png" alt="Workflows - Linux">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Index Folder - Linux" href="/img/linux/index-folder.png">
-                    <img src="/img/linux/index-folder.png" alt="Index Folder - Linux">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a class="thumbnail" data-fancybox="gallery" data-caption="Workflow Editor - Linux" href="/img/linux/workflow-editor.png">
-                    <img src="/img/linux/workflow-editor.png" alt="Workflow Editor - Linux">
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+        <!-- ═══════════════════════════════════════
+             WINDOWS SCREENSHOTS
+             ═══════════════════════════════════════ -->
+        <section class="screenshots-section section-padding">
+            <div class="container">
+                <!-- Windows -->
+                <div class="platform-section animate-on-scroll">
+                    <h2 class="platform-heading">
+                        <i class="fa-brands fa-windows"></i>
+                        Windows
+                    </h2>
+                    <div class="screenshot-grid">
+                        <a href="../img/win/main-window.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Main Window">
+                            <img src="../img/win/main-window.png" alt="Main Window" loading="lazy">
+                            <span class="screenshot-label">Main Window</span>
+                        </a>
+                        <a href="../img/win/workflows-list.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Workflows">
+                            <img src="../img/win/workflows-list.png" alt="Workflows" loading="lazy">
+                            <span class="screenshot-label">Workflows</span>
+                        </a>
+                        <a href="../img/win/settings-general.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Application Settings">
+                            <img src="../img/win/settings-general.png" alt="Application Settings" loading="lazy">
+                            <span class="screenshot-label">Settings</span>
+                        </a>
+                        <a href="../img/win/workflow-editor.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Workflow Editor">
+                            <img src="../img/win/workflow-editor.png" alt="Workflow Editor" loading="lazy">
+                            <span class="screenshot-label">Workflow Editor</span>
+                        </a>
+                        <a href="../img/win/destinations.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Destinations">
+                            <img src="../img/win/destinations.png" alt="Destinations" loading="lazy">
+                            <span class="screenshot-label">Destinations</span>
+                        </a>
+                        <a href="../img/win/color-picker.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Color Picker">
+                            <img src="../img/win/color-picker.png" alt="Color Picker" loading="lazy">
+                            <span class="screenshot-label">Color Picker</span>
+                        </a>
+                        <a href="../img/win/editor-main.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Editor View">
+                            <img src="../img/win/editor-main.png" alt="Editor View" loading="lazy">
+                            <span class="screenshot-label">Editor</span>
+                        </a>
+                        <a href="../img/win/editor-effects.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Image Effects">
+                            <img src="../img/win/editor-effects.png" alt="Image Effects" loading="lazy">
+                            <span class="screenshot-label">Image Effects</span>
+                        </a>
+                    </div>
+                </div>
 
-{% include common-js.html %}
-<script src="/js/jquery.fancybox.min.js"></script>
+                <!-- macOS -->
+                <div class="platform-section animate-on-scroll">
+                    <h2 class="platform-heading">
+                        <i class="fa-brands fa-apple"></i>
+                        macOS
+                    </h2>
+                    <div class="screenshot-grid">
+                        <a href="../img/macos/main-window.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Main Window - macOS">
+                            <img src="../img/macos/main-window.png" alt="Main Window - macOS" loading="lazy">
+                            <span class="screenshot-label">Main Window</span>
+                        </a>
+                        <a href="../img/macos/workflows-list.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Workflows - macOS">
+                            <img src="../img/macos/workflows-list.png" alt="Workflows - macOS" loading="lazy">
+                            <span class="screenshot-label">Workflows</span>
+                        </a>
+                        <a href="../img/macos/index-folder.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Index Folder - macOS">
+                            <img src="../img/macos/index-folder.png" alt="Index Folder - macOS" loading="lazy">
+                            <span class="screenshot-label">Index Folder</span>
+                        </a>
+                        <a href="../img/macos/workflow-editor.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Workflow Editor - macOS">
+                            <img src="../img/macos/workflow-editor.png" alt="Workflow Editor - macOS" loading="lazy">
+                            <span class="screenshot-label">Workflow Editor</span>
+                        </a>
+                    </div>
+                </div>
 
+                <!-- Linux -->
+                <div class="platform-section animate-on-scroll">
+                    <h2 class="platform-heading">
+                        <i class="fa-brands fa-linux"></i>
+                        Linux
+                    </h2>
+                    <div class="screenshot-grid">
+                        <a href="../img/linux/main-window.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Main Window - Linux">
+                            <img src="../img/linux/main-window.png" alt="Main Window - Linux" loading="lazy">
+                            <span class="screenshot-label">Main Window</span>
+                        </a>
+                        <a href="../img/linux/workflows-list.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Workflows - Linux">
+                            <img src="../img/linux/workflows-list.png" alt="Workflows - Linux" loading="lazy">
+                            <span class="screenshot-label">Workflows</span>
+                        </a>
+                        <a href="../img/linux/index-folder.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Index Folder - Linux">
+                            <img src="../img/linux/index-folder.png" alt="Index Folder - Linux" loading="lazy">
+                            <span class="screenshot-label">Index Folder</span>
+                        </a>
+                        <a href="../img/linux/workflow-editor.png" class="screenshot-item" data-fancybox="gallery"
+                            data-caption="Workflow Editor - Linux">
+                            <img src="../img/linux/workflow-editor.png" alt="Workflow Editor - Linux" loading="lazy">
+                            <span class="screenshot-label">Workflow Editor</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include new2-footer.html %}
+
+    <!-- Fancybox -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script>
+        // Initialize Fancybox
+        Fancybox.bind("[data-fancybox]", {
+            // Custom options
+        });
+
+        // ─────────────────────────────────────────
+        // Scroll-triggered animations
+        // ─────────────────────────────────────────
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ─────────────────────────────────────────
+        // Mobile menu toggle
+        // ─────────────────────────────────────────
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMobile = document.querySelector('.nav-mobile');
+
+        navToggle.addEventListener('click', () => {
+            const isActive = navToggle.classList.toggle('active');
+            navMobile.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isActive);
+        });
+
+        // ─────────────────────────────────────────
+        // Theme toggle functionality
+        // ─────────────────────────────────────────
+        const themeToggles = document.querySelectorAll('.theme-toggle');
+        const html = document.documentElement;
+
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return 'light'; // Default to light mode
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(getPreferredTheme());
+
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+
+</html>
