@@ -1298,6 +1298,48 @@ footer {
     color: var(--foreground);
 }
 
+/* Privacy Policy Content Styles */
+.privacy-content {
+    padding: var(--space-6);
+}
+
+.privacy-content a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.privacy-content a:hover {
+    color: var(--accent-bright);
+    text-decoration: underline;
+}
+
+/* Dark Mode Link Color Overrides */
+:root .changelog-content a,
+:root .faq-content a,
+:root .privacy-content a {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+:root .changelog-content a:hover,
+:root .faq-content a:hover,
+:root .privacy-content a:hover {
+    color: #ffffff;
+}
+
+/* Light Mode - Keep accent colors */
+[data-theme="light"] .changelog-content a,
+[data-theme="light"] .faq-content a,
+[data-theme="light"] .privacy-content a {
+    color: var(--accent);
+}
+
+[data-theme="light"] .changelog-content a:hover,
+[data-theme="light"] .faq-content a:hover,
+[data-theme="light"] .privacy-content a:hover {
+    color: var(--accent-bright);
+}
+
 /* ─────────────────────────────────────────
    SCREENSHOTS/FAQ RESPONSIVE
    ───────────────────────────────────────── */
