@@ -432,6 +432,36 @@ footer {
     color: var(--foreground);
 }
 
+/* Footer Copyright Link Styles - High Contrast */
+.footer-copyright a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.footer-copyright a:hover {
+    color: var(--accent-bright);
+    text-decoration: underline;
+}
+
+/* Dark Mode - Footer Copyright Link Overrides */
+:root .footer-copyright a {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+:root .footer-copyright a:hover {
+    color: #ffffff;
+}
+
+/* Light Mode - Footer Copyright Link Overrides */
+[data-theme="light"] .footer-copyright a {
+    color: var(--accent);
+}
+
+[data-theme="light"] .footer-copyright a:hover {
+    color: var(--accent-bright);
+}
+
 .footer-social {
     display: flex;
     justify-content: center;
