@@ -618,3 +618,122 @@
     }
 }
 
+
+/* -----------------------------------------
+   FAQ LAYOUT & TOC
+   ----------------------------------------- */
+
+.faq-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-8);
+    align-items: start;
+}
+
+.faq-sidebar {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-8));
+    display: block;
+    height: fit-content;
+    max-height: calc(100vh - var(--nav-height) - var(--space-16));
+    overflow-y: auto;
+}
+
+.toc-title {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--foreground-muted);
+    margin-bottom: var(--space-4);
+    font-weight: var(--font-semibold);
+}
+
+.toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    position: relative;
+}
+
+.toc-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: var(--border-default);
+}
+
+.toc-link {
+    display: block;
+    padding: var(--space-1) 0 var(--space-1) var(--space-4);
+    font-size: 0.875rem;
+    color: var(--foreground-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: all var(--duration-fast) var(--ease-out);
+    line-height: 1.4;
+}
+
+.toc-link:hover {
+    color: var(--foreground);
+    border-left-color: var(--border-hover);
+}
+
+.toc-link.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: var(--font-medium);
+}
+
+/* Indent sub-headings if we support them */
+.toc-link[data-level='3'] {
+    padding-left: var(--space-8);
+    font-size: 0.8125rem;
+}
+
+/* Headings with Anchors */
+.faq-heading {
+    scroll-margin-top: calc(var(--nav-height) + var(--space-8));
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.faq-heading:hover .heading-anchor {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.heading-anchor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--foreground-muted);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all var(--duration-fast) var(--ease-out);
+    font-size: 0.875rem;
+}
+
+.heading-anchor:hover {
+    color: var(--accent);
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+    .faq-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+
+    .faq-sidebar {
+        display: none; /* Hide TOC on mobile for now, or move to top */
+    }
+}
+
