@@ -566,3 +566,55 @@
             rgba(88, 86, 214, 0.12) 0%,
             transparent 60%);
 }
+/* -----------------------------------------
+   TABLES
+   ----------------------------------------- */
+
+.faq-content table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: var(--space-6) 0;
+    font-size: 0.9375rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.faq-content th,
+.faq-content td {
+    padding: var(--space-4) var(--space-6);
+    text-align: left;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.faq-content th {
+    font-weight: var(--font-semibold);
+    color: var(--foreground);
+    background: rgba(255, 255, 255, 0.03);
+    white-space: nowrap;
+}
+
+.faq-content td {
+    color: var(--foreground-muted);
+    vertical-align: top;
+}
+
+.faq-content tr:last-child td {
+    border-bottom: none;
+}
+
+/* Make table scrollable on small screens */
+.faq-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    .faq-content table {
+        display: table;
+        white-space: normal;
+    }
+}
+
