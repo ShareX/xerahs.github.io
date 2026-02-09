@@ -44,47 +44,7 @@
     <!-- ═══════════════════════════════════════
          NAVIGATION
          ═══════════════════════════════════════ -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">XerahS</a>
-
-            <div class="nav-links">
-                <a href="index.html#features" class="nav-link">Features</a>
-                <a href="screenshots.html" class="nav-link">Screenshots</a>
-                <a href="downloads.html" class="nav-link">Downloads</a>
-                <a href="changelog.html" class="nav-link">Changelog</a>
-                <a href="faq.html" class="nav-link">FAQ</a>
-                <a href="https://github.com/ShareX/XerahS" class="nav-link" target="_blank" rel="noopener">GitHub</a>
-                <button class="theme-toggle" aria-label="Toggle theme">
-                    <i class="fa-solid fa-moon"></i>
-                    <i class="fa-solid fa-sun"></i>
-                </button>
-            </div>
-
-            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div class="nav-mobile">
-            <div class="nav-mobile-links">
-                <a href="index.html#features" class="nav-mobile-link">Features</a>
-                <a href="screenshots.html" class="nav-mobile-link">Screenshots</a>
-                <a href="downloads.html" class="nav-mobile-link">Downloads</a>
-                <a href="changelog.html" class="nav-mobile-link">Changelog</a>
-                <a href="faq.html" class="nav-mobile-link">FAQ</a>
-                <a href="https://github.com/ShareX/XerahS" class="nav-mobile-link" target="_blank" rel="noopener">GitHub</a>
-                <button class="theme-toggle" aria-label="Toggle theme">
-                    <i class="fa-solid fa-moon"></i>
-                    <i class="fa-solid fa-sun"></i>
-                </button>
-                <a href="downloads.html" class="btn btn-primary nav-mobile-cta">Get Started</a>
-            </div>
-        </div>
-    </nav>
+    {% include navbar.html %}
 
     <main>
         <!-- ═══════════════════════════════════════
@@ -324,44 +284,7 @@
     <!-- ═══════════════════════════════════════
          FOOTER
          ═══════════════════════════════════════ -->
-    <footer>
-        <div class="container">
-            <div class="section-header" style="text-align: center;">
-                <h2 class="section-title">Join the Community</h2>
-                <p class="section-subtitle">Connect with developers, get help, and stay updated</p>
-            </div>
-            <div class="footer-social">
-                <a href="https://github.com/ShareX/XerahS" class="footer-social-card btn btn-secondary" target="_blank"
-                    rel="noopener">
-                    <i class="fa-brands fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://x.com/ShareX" class="footer-social-card btn btn-secondary" target="_blank" rel="noopener">
-                    <i class="fa-brands fa-x-twitter"></i>
-                    <span>X</span>
-                </a>
-                <a href="https://discord.gg/ShareX" class="footer-social-card btn btn-secondary" target="_blank"
-                    rel="noopener">
-                    <i class="fa-brands fa-discord"></i>
-                    <span>Discord</span>
-                </a>
-                <a href="https://www.reddit.com/r/sharex" class="footer-social-card btn btn-secondary" target="_blank"
-                    rel="noopener">
-                    <i class="fa-brands fa-reddit-alien"></i>
-                    <span>Reddit</span>
-                </a>
-            </div>
-        </div>
-        <div class="section-divider-accent"></div>
-        <div class="container">
-            <div class="footer-content">
-                <span class="footer-copyright">© 2024 ShareX Team. All rights reserved.</span>
-                <div class="footer-links">
-                    <a href="privacy-policy" class="footer-link">Privacy Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    {% include footer.html %}
 
     <!-- ═══════════════════════════════════════
          SCRIPTS
