@@ -423,13 +423,32 @@ footer {
 
 .footer-link {
     font-size: 0.875rem;
-    color: var(--foreground-muted);
+    color: var(--accent);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-out);
 }
 
 .footer-link:hover {
-    color: var(--foreground);
+    color: var(--accent-bright);
+    text-decoration: underline;
+}
+
+/* Dark Mode - Footer Link Overrides */
+:root .footer-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+:root .footer-link:hover {
+    color: #ffffff;
+}
+
+/* Light Mode - Footer Link Overrides */
+[data-theme="light"] .footer-link {
+    color: var(--accent);
+}
+
+[data-theme="light"] .footer-link:hover {
+    color: var(--accent-bright);
 }
 
 /* Footer Copyright Link Styles - High Contrast */
