@@ -22,19 +22,24 @@ title: FAQ
     </div>
 </div>
 
-{% include common-js.html %}
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const faqUrl = "https://raw.githubusercontent.com/ShareX/XerahS/develop/FAQ.md";
+        const contentEl = document.getElementById('faq-content');
         
-        $.get(faqUrl)
-            .done(function(data) {
-                const htmlContent = marked.parse(data);
-                $("#faq-content").html(htmlContent);
+        fetch(faqUrl)
+            .then(function(response) {
+                if (!response.ok) throw new Error('Failed to fetch FAQ');
+                return response.text();
             })
-            .fail(function() {
-                $("#faq-content").html('<div class="alert alert-danger">Failed to load FAQ from GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/FAQ.md" target="_blank">View on GitHub</a></div>');
+            .then(function(data) {
+                const htmlContent = marked.parse(data);
+                contentEl.innerHTML = htmlContent;
+            })
+            .catch(function(error) {
+                console.error('FAQ Error:', error);
+                contentEl.innerHTML = '<div class="alert alert-danger">Failed to load FAQ from GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/FAQ.md" target="_blank">View on GitHub</a></div>';
             });
     });
 </script>
