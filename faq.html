@@ -239,11 +239,18 @@
                 generateTOC();
             })
             .catch(error => {
-                console.error(error);
+                console.error('FAQ Error:', error);
                 contentEl.innerHTML = `
-                    <div class="error-message">
-                        <i class="fa-solid fa-exclamation-circle"></i>
-                        <span>Failed to load FAQ. <a href="https://github.com/ShareX/XerahS/blob/develop/FAQ.md" target="_blank">View on GitHub</a></span>
+                    <div class="error-message" style="text-align: center; padding: 2rem; color: #ff6b6b;">
+                        <i class="fa-solid fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p style="font-weight: bold; margin-bottom: 0.5rem;">Failed to load FAQ</p>
+                        <p style="font-family: monospace; font-size: 0.875rem; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px; display: inline-block; text-align: left; max-width: 100%; overflow-x: auto;">
+                            ${error.message}
+                            ${error.stack ? `<br><br><span style="opacity: 0.7">${error.stack}</span>` : ''}
+                        </p>
+                        <p style="margin-top: 1rem;">
+                            <a href="https://github.com/ShareX/XerahS/blob/develop/FAQ.md" target="_blank" style="text-decoration: underline;">View on GitHub</a>
+                        </p>
                     </div>
                 `;
             });
