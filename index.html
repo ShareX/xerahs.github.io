@@ -248,9 +248,11 @@
                         <i class="fa-brands fa-windows platform-card-icon"></i>
                         <span class="platform-card-name">Windows</span>
                         <div class="platform-card-versions">
-                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version">x64
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="win-x64">x64
                                 Installer</a>
                             <a href="https://github.com/ShareX/XerahS/releases/latest"
+                                data-download-target="win-arm64"
                                 class="platform-card-version">ARM64 Installer</a>
                         </div>
                     </div>
@@ -261,8 +263,10 @@
                         <span class="platform-card-name">macOS</span>
                         <div class="platform-card-versions">
                             <a href="https://github.com/ShareX/XerahS/releases/latest"
+                                data-download-target="mac-x64"
                                 class="platform-card-version">Intel (x64)</a>
                             <a href="https://github.com/ShareX/XerahS/releases/latest"
+                                data-download-target="mac-arm64"
                                 class="platform-card-version">Apple Silicon</a>
                         </div>
                     </div>
@@ -272,8 +276,10 @@
                         <i class="fa-brands fa-linux platform-card-icon"></i>
                         <span class="platform-card-name">Linux</span>
                         <div class="platform-card-versions">
-                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version">x64
-                                Package</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="linux-x64-deb">x64 .deb</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="linux-x64-tar">x64 .tar.gz</a>
                         </div>
                     </div>
                 </div>
@@ -397,6 +403,67 @@
         // ─────────────────────────────────────────
         // Theme toggle functionality
         // ─────────────────────────────────────────
+        // Resolve installer links to the latest release assets
+        async function hydrateLatestInstallerLinks() {
+            const releaseApiUrl = 'https://api.github.com/repos/ShareX/XerahS/releases/latest';
+            const downloadConfigs = [
+                {
+                    selector: '[data-download-target="win-x64"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('win-x64') && name.endsWith('.exe')
+                },
+                {
+                    selector: '[data-download-target="win-arm64"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('win-arm64') && name.endsWith('.exe')
+                },
+                {
+                    selector: '[data-download-target="mac-x64"]',
+                    matcher: (name) => name.startsWith('xerahs') && (name.includes('mac-x64') || name.includes('osx-x64')) && name.endsWith('.tar.gz')
+                },
+                {
+                    selector: '[data-download-target="mac-arm64"]',
+                    matcher: (name) => name.startsWith('xerahs') && (name.includes('mac-arm64') || name.includes('osx-arm64')) && name.endsWith('.tar.gz')
+                },
+                {
+                    selector: '[data-download-target="linux-x64-deb"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.deb')
+                },
+                {
+                    selector: '[data-download-target="linux-x64-tar"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.tar.gz')
+                }
+            ];
+
+            const response = await fetch(releaseApiUrl, {
+                headers: {
+                    Accept: 'application/vnd.github+json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to load release metadata: ${response.status}`);
+            }
+
+            const release = await response.json();
+            const assets = Array.isArray(release.assets) ? release.assets : [];
+
+            downloadConfigs.forEach(config => {
+                const linkElement = document.querySelector(config.selector);
+                if (!linkElement) return;
+
+                const asset = assets.find(a => config.matcher((a.name || '').toLowerCase()));
+                if (!asset) return;
+
+                const releaseInfo = `Version: ${release.tag_name}\nFile size: ${(asset.size / 1024 / 1024).toFixed(2)} MiB\nRelease date: ${new Date(asset.updated_at).toLocaleDateString('en-CA')}\nDownload count: ${asset.download_count.toLocaleString()}`;
+
+                linkElement.setAttribute('href', asset.browser_download_url);
+                linkElement.setAttribute('title', releaseInfo);
+            });
+        }
+
+        hydrateLatestInstallerLinks().catch(() => {
+            console.log('Failed to resolve latest installer asset links. Using fallback release URLs.');
+        });
+
         const themeToggles = document.querySelectorAll('.theme-toggle');
         const html = document.documentElement;
 
