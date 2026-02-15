@@ -279,7 +279,15 @@
                             <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
                                 data-download-target="linux-x64-deb">x64 .deb</a>
                             <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="linux-x64-rpm">x64 .rpm</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
                                 data-download-target="linux-x64-tar">x64 .tar.gz</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="linux-arm64-deb">ARM64 .deb</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="linux-arm64-rpm">ARM64 .rpm</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
+                                data-download-target="linux-arm64-tar">ARM64 .tar.gz</a>
                         </div>
                     </div>
                 </div>
@@ -425,11 +433,33 @@
                 },
                 {
                     selector: '[data-download-target="linux-x64-deb"]',
-                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.deb')
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.deb'),
+                    hideIfMissing: true
+                },
+                {
+                    selector: '[data-download-target="linux-x64-rpm"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.rpm'),
+                    hideIfMissing: true
                 },
                 {
                     selector: '[data-download-target="linux-x64-tar"]',
-                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.tar.gz')
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-x64') && name.endsWith('.tar.gz'),
+                    hideIfMissing: true
+                },
+                {
+                    selector: '[data-download-target="linux-arm64-deb"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-arm64') && name.endsWith('.deb'),
+                    hideIfMissing: true
+                },
+                {
+                    selector: '[data-download-target="linux-arm64-rpm"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-arm64') && name.endsWith('.rpm'),
+                    hideIfMissing: true
+                },
+                {
+                    selector: '[data-download-target="linux-arm64-tar"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('linux-arm64') && name.endsWith('.tar.gz'),
+                    hideIfMissing: true
                 }
             ];
 
@@ -451,12 +481,18 @@
                 if (!linkElement) return;
 
                 const asset = assets.find(a => config.matcher((a.name || '').toLowerCase()));
-                if (!asset) return;
+                if (!asset) {
+                    if (config.hideIfMissing) {
+                        linkElement.style.display = 'none';
+                    }
+                    return;
+                }
 
                 const releaseInfo = `Version: ${release.tag_name}\nFile size: ${(asset.size / 1024 / 1024).toFixed(2)} MiB\nRelease date: ${new Date(asset.updated_at).toLocaleDateString('en-CA')}\nDownload count: ${asset.download_count.toLocaleString()}`;
 
                 linkElement.setAttribute('href', asset.browser_download_url);
                 linkElement.setAttribute('title', releaseInfo);
+                linkElement.style.display = '';
             });
         }
 
