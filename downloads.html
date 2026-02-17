@@ -274,9 +274,55 @@
             }
         }
 
+        const percentageLabelsPlugin = {
+            id: 'percentageLabels',
+            afterDatasetsDraw(chart, args, pluginOptions) {
+                const dataset = chart.data.datasets?.[0];
+                const meta = chart.getDatasetMeta(0);
+                if (!dataset || !meta || meta.hidden) return;
+
+                const values = dataset.data.map(value => Number(value) || 0);
+                const total = values.reduce((sum, value) => sum + value, 0);
+                if (total <= 0) return;
+
+                const minPercent = typeof pluginOptions?.minPercent === 'number'
+                    ? pluginOptions.minPercent
+                    : 3;
+
+                const { ctx } = chart;
+                ctx.save();
+                ctx.font = "600 10px Inter, sans-serif";
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+                ctx.fillStyle = '#FFFFFF';
+
+                meta.data.forEach((arc, index) => {
+                    const value = values[index];
+                    if (value <= 0) return;
+
+                    const percent = (value / total) * 100;
+                    if (percent < minPercent) return;
+
+                    const angle = (arc.startAngle + arc.endAngle) / 2;
+                    const radius = (arc.innerRadius + arc.outerRadius) / 2;
+                    const x = arc.x + Math.cos(angle) * radius;
+                    const y = arc.y + Math.sin(angle) * radius;
+                    const label = `${percent.toFixed(1)}%`;
+
+                    ctx.strokeText(label, x, y);
+                    ctx.fillText(label, x, y);
+                });
+
+                ctx.restore();
+            }
+        };
+
         function createChartConfig(data, colors) {
             return {
                 type: 'doughnut',
+                plugins: [percentageLabelsPlugin],
                 data: {
                     labels: Object.keys(data),
                     datasets: [{
@@ -320,6 +366,9 @@
                                     return ` ${context.label}: ${value.toLocaleString()} (${percentage})`;
                                 }
                             }
+                        },
+                        percentageLabels: {
+                            minPercent: 3
                         }
                     },
                     cutout: '70%',
