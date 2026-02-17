@@ -26,10 +26,38 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
 
+    <style>
+        .error-banner {
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            margin: 0;
+            padding: 0.75rem 1rem;
+            background: #fff3b0;
+            color: #6d1f1f;
+            border-bottom: 1px solid #b45309;
+            font-size: 0.925rem;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .error-banner strong {
+            color: #5f1616;
+        }
+
+        .error-banner-details {
+            margin-top: 0.35rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.82rem;
+            opacity: 0.9;
+        }
+    </style>
+
     <link rel="icon" href="../favicon.ico">
 </head>
 
 <body>
+    <div id="diagnostic-banner" class="error-banner" role="alert" aria-live="assertive" hidden></div>
     <!-- ═══════════════════════════════════════
          BACKGROUND SYSTEM
          ═══════════════════════════════════════ -->
@@ -124,6 +152,36 @@
          SCRIPTS
          ═══════════════════════════════════════ -->
     <script>
+        function showDiagnosticError(message, details = '') {
+            const bannerEl = document.getElementById('diagnostic-banner');
+            if (!bannerEl) return;
+
+            bannerEl.hidden = false;
+            bannerEl.innerHTML = '';
+
+            const titleEl = document.createElement('strong');
+            titleEl.textContent = 'Page error: ';
+            bannerEl.appendChild(titleEl);
+            bannerEl.appendChild(document.createTextNode(message));
+
+            if (details) {
+                const detailsEl = document.createElement('div');
+                detailsEl.className = 'error-banner-details';
+                detailsEl.textContent = details;
+                bannerEl.appendChild(detailsEl);
+            }
+        }
+
+        window.addEventListener('error', (event) => {
+            const detail = event?.error?.message || event?.message || 'Unknown JavaScript error';
+            showDiagnosticError('Script execution failed before content finished loading.', detail);
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            const reason = event?.reason;
+            const detail = reason instanceof Error ? reason.message : String(reason || 'Unknown promise rejection');
+            showDiagnosticError('An async operation failed while loading downloads.', detail);
+        });
         // ─────────────────────────────────────────
         // Scroll-triggered animations
         // ─────────────────────────────────────────
@@ -150,17 +208,27 @@
         const navToggle = document.querySelector('.nav-toggle');
         const navMobile = document.querySelector('.nav-mobile');
 
-        navToggle.addEventListener('click', () => {
-            const isActive = navToggle.classList.toggle('active');
-            navMobile.classList.toggle('active');
-            navToggle.setAttribute('aria-expanded', isActive);
-        });
+        if (navToggle && navMobile) {
+            navToggle.addEventListener('click', () => {
+                const isActive = navToggle.classList.toggle('active');
+                navMobile.classList.toggle('active');
+                navToggle.setAttribute('aria-expanded', isActive);
+            });
+        } else {
+            const navMissingMessage = window.location.protocol === 'file:'
+                ? 'Navigation include is missing because this page is opened from disk; run it through Jekyll/local server.'
+                : 'Navigation controls are missing in the rendered page.';
+            showDiagnosticError(navMissingMessage);
+        }
 
         // ─────────────────────────────────────────
         // Theme toggle functionality
         // ─────────────────────────────────────────
         const themeToggles = document.querySelectorAll('.theme-toggle');
         const html = document.documentElement;
+        // Keep chart refs initialized before theme setup to avoid TDZ ReferenceError.
+        let downloadsChart = null;
+        let archChart = null;
 
         function getPreferredTheme() {
             const savedTheme = localStorage.getItem('theme');
@@ -191,9 +259,6 @@
         // ─────────────────────────────────────────
         // Chart Configuration
         // ─────────────────────────────────────────
-        let downloadsChart = null;
-        let archChart = null;
-        
         function updateChartTheme() {
             const isLight = html.getAttribute('data-theme') === 'light';
             const textColor = isLight ? '#1D1D1F' : '#EDEDEF';
@@ -436,6 +501,7 @@
             } catch (error) {
                 console.error(error);
                 if (totalEl) totalEl.textContent = 'Error';
+                showDiagnosticError('Failed to load release data from GitHub.', error.message || String(error));
                 
                 loadingEl.innerHTML = `
                     <div class="error-message">
