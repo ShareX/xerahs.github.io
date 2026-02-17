@@ -270,29 +270,44 @@
         }
 
         function initCharts(osStats, archStats) {
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js library not loaded');
+                return;
+            }
+
             // OS Chart
-            const osCtx = document.getElementById('downloadsChart').getContext('2d');
-            const osColors = ['#5E6AD2', '#F59E0B', '#10B981']; // Indigo, Amber, Emerald
-            
-            const osData = {
-                'Windows': osStats.windows,
-                'Linux': osStats.linux,
-                'macOS': osStats.mac
-            };
-            
-            downloadsChart = new Chart(osCtx, createChartConfig(osData, osColors));
+            const osCanvas = document.getElementById('downloadsChart');
+            if (osCanvas) {
+                const osCtx = osCanvas.getContext('2d');
+                const osColors = ['#5E6AD2', '#F59E0B', '#10B981']; // Indigo, Amber, Emerald
+                
+                const osData = {
+                    'Windows': osStats.windows,
+                    'Linux': osStats.linux,
+                    'macOS': osStats.mac
+                };
+                
+                downloadsChart = new Chart(osCtx, createChartConfig(osData, osColors));
+            } else {
+                console.warn('Downloads chart canvas not found');
+            }
             
             // Architecture Chart
-            const archCtx = document.getElementById('archChart').getContext('2d');
-            const archColors = ['#8B5CF6', '#EC4899', '#64748B']; // Violet, Pink, Slate
-            
-            // Filter out unknown if zero or negligible
-            const archData = {
-                'x64': archStats.x64,
-                'ARM64': archStats.arm64
-            };
-            
-            archChart = new Chart(archCtx, createChartConfig(archData, archColors));
+            const archCanvas = document.getElementById('archChart');
+            if (archCanvas) {
+                const archCtx = archCanvas.getContext('2d');
+                const archColors = ['#8B5CF6', '#EC4899', '#64748B']; // Violet, Pink, Slate
+                
+                // Filter out unknown if zero or negligible
+                const archData = {
+                    'x64': archStats.x64,
+                    'ARM64': archStats.arm64
+                };
+                
+                archChart = new Chart(archCtx, createChartConfig(archData, archColors));
+            } else {
+                console.warn('Architecture chart canvas not found');
+            }
         }
 
         // ─────────────────────────────────────────
@@ -334,14 +349,15 @@
                 let html = '';
 
                 allReleases.forEach((release, index) => {
-                    if (release.assets.length === 0) return;
+                    if (!release.assets || !Array.isArray(release.assets) || release.assets.length === 0) return;
 
                     let releaseDownloads = 0;
                     
                     release.assets.forEach(asset => {
-                        const count = asset.download_count;
+                        const count = asset.download_count || 0;
                         releaseDownloads += count;
                         
+                        if (!asset.name) return;
                         const name = asset.name.toLowerCase();
                         
                         // OS Categorization
@@ -359,10 +375,6 @@
                         } else if (name.includes('x64') || name.includes('x86_64') || name.includes('amd64') || name.includes('win64')) {
                             archStats.x64 += count;
                         } else {
-                            // Default to x64 for standard windows installers if not specified, 
-                            // but be careful. For now, let's assume if it's not explicitly ARM, it's likely x64 
-                            // for desktop apps, but purely unknown is safer. 
-                            // However, most old ShareX/XerahS builds are x64.
                             if (!name.includes('arm')) {
                                 archStats.x64 += count;
                             }
@@ -423,10 +435,12 @@
 
             } catch (error) {
                 console.error(error);
+                if (totalEl) totalEl.textContent = 'Error';
+                
                 loadingEl.innerHTML = `
                     <div class="error-message">
                         <i class="fa-solid fa-exclamation-circle"></i>
-                        <span>Failed to load releases. <a href="https://github.com/${repo}/releases" target="_blank">View on GitHub</a></span>
+                        <span>Failed to load releases. The API request may have been rate-limited or failed. <br><span style="font-size: 0.8em; opacity: 0.8;">${error.message}</span></span>
                     </div>
                 `;
             }
