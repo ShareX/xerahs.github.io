@@ -645,10 +645,29 @@ footer {
     padding: var(--space-8) 0;
 }
 
-.stats-card {
-    max-width: 400px;
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: 1000px;
     margin: 0 auto;
-    padding: var(--space-6) var(--space-8);
+}
+
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+    }
+}
+
+.stats-card {
+    width: 100%;
+    margin: 0;
+    padding: var(--space-6);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .stats-content {

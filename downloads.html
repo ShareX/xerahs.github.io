@@ -17,6 +17,9 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Styles -->
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/animations.css">
@@ -63,17 +66,36 @@
              ═══════════════════════════════════════ -->
         <section class="stats-section">
             <div class="container">
-                <div class="stats-card card animate-on-scroll">
-                    <div class="spotlight"></div>
-                    <div class="stats-content">
-                        <div class="stats-icon">
-                            <i class="fa-solid fa-download"></i>
+                <div class="stats-grid">
+                    <!-- 1. OS Distribution (Left) -->
+                    <div class="stats-card card animate-on-scroll">
+                         <div class="spotlight"></div>
+                         <div class="chart-container" style="position: relative; height: 160px; width: 100%; display: flex; justify-content: center;">
+                            <canvas id="downloadsChart"></canvas>
                         </div>
-                        <div class="stats-info">
-                            <span class="stats-label">Total Downloads</span>
-                            <span class="stats-value total-downloads-value">
-                                <i class="fa-solid fa-spinner fa-spin"></i>
-                            </span>
+                    </div>
+
+                    <!-- 2. Total Downloads (Center) -->
+                    <div class="stats-card card animate-on-scroll">
+                        <div class="spotlight"></div>
+                        <div class="stats-content">
+                            <div class="stats-icon">
+                                <i class="fa-solid fa-download"></i>
+                            </div>
+                            <div class="stats-info">
+                                <span class="stats-label">Total Downloads</span>
+                                <span class="stats-value total-downloads-value">
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 3. Architecture Distribution (Right) -->
+                    <div class="stats-card card animate-on-scroll">
+                         <div class="spotlight"></div>
+                         <div class="chart-container" style="position: relative; height: 160px; width: 100%; display: flex; justify-content: center;">
+                            <canvas id="archChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -143,7 +165,7 @@
         function getPreferredTheme() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) return savedTheme;
-            return 'light'; // Default to light mode
+            return 'dark'; // Default to dark mode
         }
 
         function setTheme(theme) {
@@ -153,6 +175,7 @@
                 html.removeAttribute('data-theme');
             }
             localStorage.setItem('theme', theme);
+            updateChartTheme();
         }
 
         setTheme(getPreferredTheme());
@@ -164,6 +187,113 @@
                 setTheme(newTheme);
             });
         });
+
+        // ─────────────────────────────────────────
+        // Chart Configuration
+        // ─────────────────────────────────────────
+        let downloadsChart = null;
+        let archChart = null;
+        
+        function updateChartTheme() {
+            const isLight = html.getAttribute('data-theme') === 'light';
+            const textColor = isLight ? '#1D1D1F' : '#EDEDEF';
+            
+            if (downloadsChart) {
+                downloadsChart.options.plugins.legend.labels.color = textColor;
+                downloadsChart.update();
+            }
+            
+            if (archChart) {
+                archChart.options.plugins.legend.labels.color = textColor;
+                archChart.update();
+            }
+        }
+
+        function createChartConfig(data, colors) {
+            return {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: colors,
+                        borderColor: 'transparent',
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: html.getAttribute('data-theme') === 'light' ? '#1D1D1F' : '#EDEDEF',
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 11
+                                },
+                                usePointStyle: true,
+                                padding: 15,
+                                boxWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(5, 5, 6, 0.9)',
+                            titleColor: '#EDEDEF',
+                            bodyColor: '#A1A1AA',
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            padding: 10,
+                            cornerRadius: 6,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1) + '%';
+                                    return ` ${context.label}: ${value.toLocaleString()} (${percentage})`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%',
+                    layout: {
+                        padding: 0
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+        }
+
+        function initCharts(osStats, archStats) {
+            // OS Chart
+            const osCtx = document.getElementById('downloadsChart').getContext('2d');
+            const osColors = ['#5E6AD2', '#F59E0B', '#10B981']; // Indigo, Amber, Emerald
+            
+            const osData = {
+                'Windows': osStats.windows,
+                'Linux': osStats.linux,
+                'macOS': osStats.mac
+            };
+            
+            downloadsChart = new Chart(osCtx, createChartConfig(osData, osColors));
+            
+            // Architecture Chart
+            const archCtx = document.getElementById('archChart').getContext('2d');
+            const archColors = ['#8B5CF6', '#EC4899', '#64748B']; // Violet, Pink, Slate
+            
+            // Filter out unknown if zero or negligible
+            const archData = {
+                'x64': archStats.x64,
+                'ARM64': archStats.arm64
+            };
+            
+            archChart = new Chart(archCtx, createChartConfig(archData, archColors));
+        }
 
         // ─────────────────────────────────────────
         // Fetch releases from GitHub
@@ -198,13 +328,47 @@
                 allReleases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
 
                 let totalDownloads = 0;
+                let osStats = { windows: 0, mac: 0, linux: 0 };
+                let archStats = { x64: 0, arm64: 0 };
                 let previousDate = new Date();
                 let html = '';
 
                 allReleases.forEach((release, index) => {
                     if (release.assets.length === 0) return;
 
-                    const releaseDownloads = release.assets.reduce((sum, a) => sum + a.download_count, 0);
+                    let releaseDownloads = 0;
+                    
+                    release.assets.forEach(asset => {
+                        const count = asset.download_count;
+                        releaseDownloads += count;
+                        
+                        const name = asset.name.toLowerCase();
+                        
+                        // OS Categorization
+                        if (name.includes('mac') || name.includes('darwin') || name.includes('.dmg') || name.includes('.pkg')) {
+                            osStats.mac += count;
+                        } else if (name.includes('linux') || name.includes('.deb') || name.includes('.rpm') || name.includes('.appimage')) {
+                            osStats.linux += count;
+                        } else if (name.includes('windows') || name.includes('win') || name.includes('.exe') || name.includes('.msi') || name.includes('portable')) {
+                            osStats.windows += count;
+                        }
+
+                        // Architecture Categorization
+                        if (name.includes('arm64') || name.includes('aarch64')) {
+                            archStats.arm64 += count;
+                        } else if (name.includes('x64') || name.includes('x86_64') || name.includes('amd64') || name.includes('win64')) {
+                            archStats.x64 += count;
+                        } else {
+                            // Default to x64 for standard windows installers if not specified, 
+                            // but be careful. For now, let's assume if it's not explicitly ARM, it's likely x64 
+                            // for desktop apps, but purely unknown is safer. 
+                            // However, most old ShareX/XerahS builds are x64.
+                            if (!name.includes('arm')) {
+                                archStats.x64 += count;
+                            }
+                        }
+                    });
+
                     totalDownloads += releaseDownloads;
 
                     const publishedDate = new Date(release.published_at);
@@ -253,8 +417,12 @@
                 totalEl.textContent = totalDownloads.toLocaleString();
                 listEl.innerHTML = html;
                 loadingEl.style.display = 'none';
+                
+                // Initialize charts
+                initCharts(osStats, archStats);
 
             } catch (error) {
+                console.error(error);
                 loadingEl.innerHTML = `
                     <div class="error-message">
                         <i class="fa-solid fa-exclamation-circle"></i>
