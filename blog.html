@@ -667,8 +667,11 @@
             }
 
             overlay.addEventListener('click', (event) => {
-                const target = event.target;
-                if (target && target.hasAttribute('data-blog-viewer-close')) {
+                const closeTrigger = event.target instanceof Element
+                    ? event.target.closest('[data-blog-viewer-close]')
+                    : null;
+
+                if (closeTrigger && overlay.contains(closeTrigger)) {
                     closeViewer();
                 }
             });
