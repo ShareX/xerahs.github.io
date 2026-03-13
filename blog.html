@@ -236,9 +236,9 @@
                         The calendar links directly to the corresponding <code>blob/develop</code> URLs.
                     </p>
                     <p class="blog-calendar-note">
-                        To add a new entry, create a file under
+                        Blog entries are discovered automatically from
                         <code>docs/blog/&lt;year&gt;/&lt;year&gt;-&lt;month&gt;/blog-&lt;yyyymmdd&gt;.md</code>
-                        in the main <code>XerahS</code> repository and register the date in this page’s data list.
+                        in the main <code>XerahS</code> repository; newly added days will appear here once pushed.
                     </p>
                 </div>
             </div>
@@ -249,32 +249,14 @@
 
     <!-- Scripts -->
     <script>
-        // Known blog posts (extend this list as new days are published)
-        const blogPosts = [
-            {
-                date: '2025-12-29',
-                title: 'XerahS Daily Blog – 2025-12-29'
-            },
-            {
-                date: '2026-01-14',
-                title: 'XerahS Daily Blog – 2026-01-14'
-            },
-            {
-                date: '2026-01-16',
-                title: 'XerahS Daily Blog – 2026-01-16'
-            },
-            {
-                date: '2026-01-17',
-                title: 'XerahS Daily Blog – 2026-01-17'
-            },
-            {
-                date: '2026-01-18',
-                title: 'XerahS Daily Blog – 2026-01-18'
-            },
-            {
-                date: '2026-02-14',
-                title: 'XerahS Daily Blog – 2026-02-14'
-            }
+        // Fallback list used only if GitHub API discovery fails
+        const fallbackBlogPosts = [
+            { date: '2025-12-29', title: 'XerahS Daily Blog – 2025-12-29' },
+            { date: '2026-01-14', title: 'XerahS Daily Blog – 2026-01-14' },
+            { date: '2026-01-16', title: 'XerahS Daily Blog – 2026-01-16' },
+            { date: '2026-01-17', title: 'XerahS Daily Blog – 2026-01-17' },
+            { date: '2026-01-18', title: 'XerahS Daily Blog – 2026-01-18' },
+            { date: '2026-02-14', title: 'XerahS Daily Blog – 2026-02-14' }
         ];
 
         function buildGitHubUrl(dateString) {
@@ -372,7 +354,68 @@
             }
         }
 
-        (function initBlogCalendar() {
+        async function fetchAllBlogPostsFromGitHub() {
+            const headers = {
+                Accept: 'application/vnd.github+json'
+            };
+
+            try {
+                const rootResponse = await fetch('https://api.github.com/repos/ShareX/XerahS/contents/docs/blog?ref=develop', {
+                    headers
+                });
+
+                if (!rootResponse.ok) {
+                    throw new Error('Failed to load blog root');
+                }
+
+                const yearEntries = await rootResponse.json();
+                const posts = [];
+
+                for (const yearEntry of yearEntries) {
+                    if (yearEntry.type !== 'dir') continue;
+                    const year = yearEntry.name;
+
+                    const yearResponse = await fetch(yearEntry.url, { headers });
+                    if (!yearResponse.ok) continue;
+                    const monthEntries = await yearResponse.json();
+
+                    for (const monthEntry of monthEntries) {
+                        if (monthEntry.type !== 'dir') continue;
+                        const monthDir = monthEntry.name; // e.g. 2025-12
+
+                        const monthResponse = await fetch(monthEntry.url, { headers });
+                        if (!monthResponse.ok) continue;
+                        const files = await monthResponse.json();
+
+                        for (const file of files) {
+                            if (file.type !== 'file') continue;
+                            if (!/^blog-\d{8}\.md$/i.test(file.name)) continue;
+
+                            const raw = file.name.substring(5, 13); // yyyymmdd
+                            const yearPart = raw.substring(0, 4);
+                            const monthPart = raw.substring(4, 6);
+                            const dayPart = raw.substring(6, 8);
+
+                            posts.push({
+                                date: `${yearPart}-${monthPart}-${dayPart}`,
+                                title: `XerahS Daily Blog – ${yearPart}-${monthPart}-${dayPart}`
+                            });
+                        }
+                    }
+                }
+
+                return posts;
+            } catch {
+                return [];
+            }
+        }
+
+        (async function initBlogCalendar() {
+            const discovered = await fetchAllBlogPostsFromGitHub();
+            const blogPosts = Array.isArray(discovered) && discovered.length > 0
+                ? discovered
+                : fallbackBlogPosts;
+
             if (!Array.isArray(blogPosts) || blogPosts.length === 0) {
                 return;
             }
