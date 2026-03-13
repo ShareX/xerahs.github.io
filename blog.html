@@ -133,6 +133,9 @@
             text-decoration: none;
             font-size: 0.75rem;
             transition: background 0.15s ease, transform 0.15s ease;
+            border: none;
+            cursor: pointer;
+            font: inherit;
         }
 
         .blog-calendar-entry:hover {
@@ -169,6 +172,119 @@
         .blog-calendar-legend a:hover,
         .blog-calendar-note a:hover {
             text-decoration: underline;
+        }
+
+        .blog-viewer-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: none;
+        }
+
+        .blog-viewer-overlay.active {
+            display: block;
+        }
+
+        .blog-viewer-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 7, 18, 0.75);
+            backdrop-filter: blur(18px);
+        }
+
+        .blog-viewer-dialog {
+            position: relative;
+            max-width: 960px;
+            max-height: 80vh;
+            margin: 40px auto;
+            padding: 20px 24px;
+            border-radius: 20px;
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent),
+                radial-gradient(circle at bottom right, rgba(244, 114, 182, 0.08), rgba(15, 23, 42, 0.98));
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow:
+                0 0 0 1px rgba(148, 163, 184, 0.3),
+                0 24px 80px rgba(0, 0, 0, 0.75),
+                0 0 120px rgba(56, 189, 248, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-viewer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .blog-viewer-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .blog-viewer-close {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            padding: 4px 10px;
+            background: rgba(15, 23, 42, 0.9);
+            color: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        .blog-viewer-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .blog-viewer-meta a {
+            color: #93C5FD;
+            text-decoration: none;
+        }
+
+        .blog-viewer-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .blog-viewer-body {
+            flex: 1;
+            overflow: auto;
+            padding-right: 4px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .blog-viewer-body h1,
+        .blog-viewer-body h2,
+        .blog-viewer-body h3 {
+            margin-top: 1.4em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+
+        .blog-viewer-body p {
+            margin: 0.4em 0;
+        }
+
+        .blog-viewer-body a {
+            color: #93C5FD;
+        }
+
+        .blog-viewer-loading,
+        .blog-viewer-error {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
 
         @media (max-width: 640px) {
@@ -254,11 +370,35 @@
                 </div>
             </div>
         </section>
+
+        <!-- Blog post viewer -->
+        <div class="blog-viewer-overlay" id="blog-viewer" aria-hidden="true">
+            <div class="blog-viewer-backdrop" data-blog-viewer-close></div>
+            <div class="blog-viewer-dialog" role="dialog" aria-modal="true" aria-labelledby="blog-viewer-title">
+                <div class="blog-viewer-header">
+                    <h2 class="blog-viewer-title" id="blog-viewer-title">Daily blog</h2>
+                    <button type="button" class="blog-viewer-close" id="blog-viewer-close" data-blog-viewer-close>
+                        <i class="fa-solid fa-xmark"></i>
+                        <span>Close</span>
+                    </button>
+                </div>
+                <div class="blog-viewer-meta">
+                    <span id="blog-viewer-date"></span>
+                    <a href="#" id="blog-viewer-github" target="_blank" rel="noopener">
+                        Open on GitHub
+                    </a>
+                </div>
+                <div class="blog-viewer-body" id="blog-viewer-body">
+                    <p class="blog-viewer-loading">Select a day in the calendar to read that entry.</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     {% include footer.html %}
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // Fallback list used only if GitHub API discovery fails
         const fallbackBlogPosts = [
@@ -275,6 +415,13 @@
             const monthDir = `${year}-${month}`;
             const fileName = `blog-${year}${month}${day}.md`;
             return `https://github.com/ShareX/XerahS/blob/develop/docs/blog/${year}/${monthDir}/${fileName}`;
+        }
+
+        function buildRawGitHubUrl(dateString) {
+            const [year, month, day] = dateString.split('-');
+            const monthDir = `${year}-${month}`;
+            const fileName = `blog-${year}${month}${day}.md`;
+            return `https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/blog/${year}/${monthDir}/${fileName}`;
         }
 
         function groupPostsByMonth(posts) {
@@ -349,14 +496,13 @@
 
                 if (postsByDay.has(day)) {
                     const post = postsByDay.get(day);
-                    const link = document.createElement('a');
-                    link.className = 'blog-calendar-entry';
-                    link.href = buildGitHubUrl(post.date);
-                    link.target = '_blank';
-                    link.rel = 'noopener';
-                    link.innerHTML = `<i class="fa-solid fa-file-lines"></i><span>Daily blog</span>`;
-                    link.title = post.title;
-                    cell.appendChild(link);
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'blog-calendar-entry';
+                    button.dataset.date = post.date;
+                    button.innerHTML = `<i class="fa-solid fa-file-lines"></i><span>Daily blog</span>`;
+                    button.title = post.title;
+                    cell.appendChild(button);
                 } else {
                     cell.classList.add('blog-calendar-cell-empty');
                 }
@@ -478,6 +624,69 @@
             });
 
             render();
+        })();
+
+        // Blog viewer logic
+        (function initBlogViewer() {
+            const overlay = document.getElementById('blog-viewer');
+            const body = document.getElementById('blog-viewer-body');
+            const dateLabel = document.getElementById('blog-viewer-date');
+            const githubLink = document.getElementById('blog-viewer-github');
+
+            if (!overlay || !body || !dateLabel || !githubLink) {
+                return;
+            }
+
+            async function loadPost(dateString) {
+                body.innerHTML = '<p class="blog-viewer-loading">Loading blog entry…</p>';
+                dateLabel.textContent = dateString;
+                githubLink.href = buildGitHubUrl(dateString);
+
+                try {
+                    const response = await fetch(buildRawGitHubUrl(dateString));
+                    if (!response.ok) {
+                        throw new Error('Failed to load content');
+                    }
+                    const markdown = await response.text();
+                    const html = window.marked ? window.marked.parse(markdown) : markdown;
+                    body.innerHTML = html;
+                } catch (err) {
+                    body.innerHTML = '<p class="blog-viewer-error">Unable to load this entry from GitHub right now.</p>';
+                }
+            }
+
+            function openViewer(dateString) {
+                overlay.classList.add('active');
+                overlay.setAttribute('aria-hidden', 'false');
+                loadPost(dateString);
+            }
+
+            function closeViewer() {
+                overlay.classList.remove('active');
+                overlay.setAttribute('aria-hidden', 'true');
+            }
+
+            overlay.addEventListener('click', (event) => {
+                const target = event.target;
+                if (target && target.hasAttribute('data-blog-viewer-close')) {
+                    closeViewer();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeViewer();
+                }
+            });
+
+            document.addEventListener('click', (event) => {
+                const button = event.target.closest('.blog-calendar-entry');
+                if (!button) return;
+                const date = button.dataset.date;
+                if (!date) return;
+                event.preventDefault();
+                openViewer(date);
+            });
         })();
 
         // Scroll-triggered animations
