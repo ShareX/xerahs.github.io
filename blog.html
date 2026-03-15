@@ -273,6 +273,14 @@
             { date: '2026-02-14', title: 'XerahS Daily Blog – 2026-02-14' }
         ];
 
+        function getTodayYYYYMMDD() {
+            const d = new Date();
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+
         function groupPostsByMonth(posts) {
             const map = new Map();
             posts.forEach(post => {
@@ -418,11 +426,20 @@
 
         (async function initBlogCalendar() {
             const discovered = await fetchAllBlogPostsFromGitHub();
-            const blogPosts = Array.isArray(discovered) && discovered.length > 0
+            const allPosts = Array.isArray(discovered) && discovered.length > 0
                 ? discovered
                 : fallbackBlogPosts;
 
-            if (!Array.isArray(blogPosts) || blogPosts.length === 0) {
+            if (!Array.isArray(allPosts) || allPosts.length === 0) {
+                return;
+            }
+
+            const today = getTodayYYYYMMDD();
+            const blogPosts = allPosts.filter(function (post) {
+                return post.date <= today;
+            });
+
+            if (blogPosts.length === 0) {
                 return;
             }
 

@@ -1,25 +1,26 @@
 ---
 # Layout for individual blog post pages (SEO-friendly, one URL per post).
-# page.date is YYYY-MM-DD from the collection document.
+# page.date from front matter may be rendered as a full timestamp; normalize to YYYY-MM-DD.
 ---
+{% assign blog_date = page.date | date: "%Y-%m-%d" %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XerahS Daily Blog – {{ page.date }} – XerahS</title>
-    <meta name="description" content="XerahS daily development blog entry for {{ page.date }}. Screen capture, file sharing and productivity updates from the ShareX Team.">
+    <title>XerahS Daily Blog – {{ blog_date }} – XerahS</title>
+    <meta name="description" content="XerahS daily development blog entry for {{ blog_date }}. Screen capture, file sharing and productivity updates from the ShareX Team.">
 
     <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="XerahS Daily Blog – {{ page.date }}">
-    <meta property="og:description" content="XerahS daily development blog entry for {{ page.date }}.">
+    <meta property="og:title" content="XerahS Daily Blog – {{ blog_date }}">
+    <meta property="og:description" content="XerahS daily development blog entry for {{ blog_date }}.">
     <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}">
     <meta property="og:site_name" content="XerahS">
-    <meta property="article:published_time" content="{{ page.date }}T00:00:00+00:00">
+    <meta property="article:published_time" content="{{ blog_date }}T00:00:00+00:00">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,8 +63,8 @@
     {
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "XerahS Daily Blog – {{ page.date }}",
-        "datePublished": "{{ page.date }}",
+        "headline": "XerahS Daily Blog – {{ blog_date }}",
+        "datePublished": "{{ blog_date }}",
         "author": { "@type": "Organization", "name": "ShareX Team" },
         "publisher": { "@type": "Organization", "name": "ShareX Team" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}" }
@@ -94,17 +95,17 @@
                 <div class="blog-post-page">
                     <article class="blog-post-card">
                         <header class="blog-post-header">
-                            <h1 class="blog-post-title">XerahS Daily Blog – {{ page.date }}</h1>
+                            <h1 class="blog-post-title">XerahS Daily Blog – {{ blog_date }}</h1>
                         </header>
                         <div class="blog-post-meta">
-                            <span>{{ page.date }}</span>
-                            <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/{{ page.date | slice: 0, 4 }}/{{ page.date | slice: 0, 7 }}/blog-{{ page.date | remove: '-' }}.md" target="_blank" rel="noopener">View source on GitHub</a>
+                            <span>{{ blog_date }}</span>
+                            <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/{{ blog_date | slice: 0, 4 }}/{{ blog_date | slice: 0, 7 }}/blog-{{ blog_date | remove: '-' }}.md" target="_blank" rel="noopener">View source on GitHub</a>
                         </div>
-                        <div class="blog-post-body" id="blog-post-body" data-blog-date="{{ page.date }}">
+                        <div class="blog-post-body" id="blog-post-body" data-blog-date="{{ blog_date }}">
                             <p class="blog-post-loading">Loading blog entry…</p>
                         </div>
                         <noscript>
-                            <p>This post is available as Markdown on GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/{{ page.date | slice: 0, 4 }}/{{ page.date | slice: 0, 7 }}/blog-{{ page.date | remove: '-' }}.md" target="_blank" rel="noopener">Open on GitHub</a>.</p>
+                            <p>This post is available as Markdown on GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/{{ blog_date | slice: 0, 4 }}/{{ blog_date | slice: 0, 7 }}/blog-{{ blog_date | remove: '-' }}.md" target="_blank" rel="noopener">Open on GitHub</a>.</p>
                         </noscript>
                     </article>
                 </div>
