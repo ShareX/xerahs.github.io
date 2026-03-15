@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Calendar - XerahS</title>
     <meta name="description"
-        content="Calendar-based view of the XerahS daily blog with links to each GitHub-hosted entry.">
+        content="Calendar-based view of the XerahS daily blog. Each day has its own page for sharing and search engines.">
+    <link rel="canonical" href="https://xerahs.github.io/blog.html">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -357,15 +358,14 @@
                     </div>
 
                     <p class="blog-calendar-legend">
-                        <strong>Tip:</strong> Blog entries are stored as Markdown files in the
+                        <strong>Tip:</strong> Each day links to its own page (e.g. <a href="blog/post/2026-02-14.html">blog/post/2026-02-14.html</a>) for sharing and SEO. Source Markdown lives in the
                         <a href="https://github.com/ShareX/XerahS/tree/develop/docs/blog" target="_blank"
                             rel="noopener">XerahS GitHub repository</a>.
-                        The calendar links directly to the corresponding <code>blob/develop</code> URLs.
                     </p>
                     <p class="blog-calendar-note">
                         Blog entries are discovered automatically from
                         <code>docs/blog/&lt;year&gt;/&lt;year&gt;-&lt;month&gt;/blog-&lt;yyyymmdd&gt;.md</code>
-                        in the main <code>XerahS</code> repository; newly added days will appear here once pushed.
+                        in the main <code>XerahS</code> repository. New posts get a dedicated page after running <code>scripts/update-blog-posts.mjs</code> (see README).
                     </p>
                 </div>
             </div>
@@ -496,13 +496,13 @@
 
                 if (postsByDay.has(day)) {
                     const post = postsByDay.get(day);
-                    const button = document.createElement('button');
-                    button.type = 'button';
-                    button.className = 'blog-calendar-entry';
-                    button.dataset.date = post.date;
-                    button.innerHTML = `<i class="fa-solid fa-file-lines"></i><span>Daily blog</span>`;
-                    button.title = post.title;
-                    cell.appendChild(button);
+                    const link = document.createElement('a');
+                    link.href = `blog/post/${post.date}.html`;
+                    link.className = 'blog-calendar-entry';
+                    link.dataset.date = post.date;
+                    link.innerHTML = `<i class="fa-solid fa-file-lines"></i><span>Daily blog</span>`;
+                    link.title = post.title;
+                    cell.appendChild(link);
                 } else {
                     cell.classList.add('blog-calendar-cell-empty');
                 }
@@ -683,9 +683,9 @@
             });
 
             document.addEventListener('click', (event) => {
-                const button = event.target.closest('.blog-calendar-entry');
-                if (!button) return;
-                const date = button.dataset.date;
+                const link = event.target.closest('.blog-calendar-entry');
+                if (!link) return;
+                const date = link.dataset.date;
                 if (!date) return;
                 event.preventDefault();
                 openViewer(date);

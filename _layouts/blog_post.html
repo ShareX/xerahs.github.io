@@ -1,0 +1,176 @@
+---
+# Layout for individual blog post pages (SEO-friendly, one URL per post).
+# page.date is YYYY-MM-DD from the collection document.
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XerahS Daily Blog – {{ page.date }} – XerahS</title>
+    <meta name="description" content="XerahS daily development blog entry for {{ page.date }}. Screen capture, file sharing and productivity updates from the ShareX Team.">
+
+    <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="XerahS Daily Blog – {{ page.date }}">
+    <meta property="og:description" content="XerahS daily development blog entry for {{ page.date }}.">
+    <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}">
+    <meta property="og:site_name" content="XerahS">
+    <meta property="article:published_time" content="{{ page.date }}T00:00:00+00:00">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/tokens.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/animations.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/components.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/layout.css">
+    <link rel="icon" href="{{ site.baseurl }}/favicon.ico">
+
+    <style>
+        .blog-post-page { max-width: 960px; margin: 0 auto; }
+        .blog-post-card {
+            border-radius: 20px;
+            padding: 24px 28px;
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent),
+                radial-gradient(circle at bottom right, rgba(244, 114, 182, 0.08), rgba(15, 23, 42, 0.98));
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3), 0 24px 80px rgba(0, 0, 0, 0.75);
+        }
+        .blog-post-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .blog-post-title { font-size: 1.3rem; font-weight: 600; }
+        .blog-post-meta { font-size: 0.9rem; opacity: 0.85; margin-bottom: 16px; }
+        .blog-post-meta a { color: #93C5FD; text-decoration: none; }
+        .blog-post-meta a:hover { text-decoration: underline; }
+        .blog-post-body { font-size: 0.95rem; line-height: 1.6; }
+        .blog-post-body h1, .blog-post-body h2, .blog-post-body h3 { margin-top: 1.4em; margin-bottom: 0.5em; font-weight: 600; }
+        .blog-post-body p { margin: 0.5em 0; }
+        .blog-post-body a { color: #93C5FD; }
+        .blog-post-loading, .blog-post-error { opacity: 0.9; }
+        .blog-post-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; color: inherit; text-decoration: none; font-size: 0.9rem; opacity: 0.9; }
+        .blog-post-back:hover { opacity: 1; text-decoration: underline; }
+    </style>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "XerahS Daily Blog – {{ page.date }}",
+        "datePublished": "{{ page.date }}",
+        "author": { "@type": "Organization", "name": "ShareX Team" },
+        "publisher": { "@type": "Organization", "name": "ShareX Team" },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}" }
+    }
+    </script>
+</head>
+
+<body>
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    {% include navbar.html %}
+
+    <main>
+        <section class="section-padding">
+            <div class="container">
+                <a href="{{ site.baseurl }}/blog.html" class="blog-post-back" aria-label="Back to blog calendar">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to blog calendar</span>
+                </a>
+                <div class="blog-post-page">
+                    <article class="blog-post-card">
+                        <header class="blog-post-header">
+                            <h1 class="blog-post-title">XerahS Daily Blog – {{ page.date }}</h1>
+                        </header>
+                        <div class="blog-post-meta">
+                            <span>{{ page.date }}</span>
+                            <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/{{ page.date | slice: 0, 4 }}/{{ page.date | slice: 0, 7 }}/blog-{{ page.date | remove: '-' }}.md" target="_blank" rel="noopener">View source on GitHub</a>
+                        </div>
+                        <div class="blog-post-body" id="blog-post-body" data-blog-date="{{ page.date }}">
+                            <p class="blog-post-loading">Loading blog entry…</p>
+                        </div>
+                        <noscript>
+                            <p>This post is available as Markdown on GitHub. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/{{ page.date | slice: 0, 4 }}/{{ page.date | slice: 0, 7 }}/blog-{{ page.date | remove: '-' }}.md" target="_blank" rel="noopener">Open on GitHub</a>.</p>
+                        </noscript>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include footer.html %}
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        (function () {
+            var el = document.getElementById('blog-post-body');
+            if (!el) return;
+            var date = el.getAttribute('data-blog-date');
+            if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+                el.innerHTML = '<p class="blog-post-error">Invalid date.</p>';
+                return;
+            }
+            var parts = date.split('-');
+            var year = parts[0], month = parts[1], day = parts[2];
+            var monthDir = year + '-' + month;
+            var fileName = 'blog-' + year + month + day + '.md';
+            var rawUrl = 'https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/blog/' + year + '/' + monthDir + '/' + fileName;
+
+            fetch(rawUrl)
+                .then(function (r) { return r.ok ? r.text() : Promise.reject(new Error('Not found')); })
+                .then(function (markdown) {
+                    el.innerHTML = window.marked ? window.marked.parse(markdown) : markdown;
+                })
+                .catch(function () {
+                    el.innerHTML = '<p class="blog-post-error">Unable to load this entry. You can <a href="https://github.com/ShareX/XerahS/blob/develop/docs/blog/' + year + '/' + monthDir + '/' + fileName + '">view it on GitHub</a>.</p>';
+                });
+        })();
+    </script>
+    <script>
+        var navToggle = document.querySelector('.nav-toggle');
+        var navMobile = document.querySelector('.nav-mobile');
+        if (navToggle && navMobile) {
+            navToggle.addEventListener('click', function () {
+                var isActive = navToggle.classList.toggle('active');
+                navMobile.classList.toggle('active');
+                navToggle.setAttribute('aria-expanded', isActive);
+            });
+        }
+        var themeToggles = document.querySelectorAll('.theme-toggle');
+        var html = document.documentElement;
+        function getPreferredTheme() {
+            var saved = localStorage.getItem('theme');
+            return saved || 'light';
+        }
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            if (theme !== undefined) localStorage.setItem('theme', theme);
+        }
+        setTheme(getPreferredTheme());
+        themeToggles.forEach(function (t) {
+            t.addEventListener('click', function () {
+                setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+            });
+        });
+    </script>
+</body>
+
+</html>

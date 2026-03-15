@@ -13,3 +13,8 @@ highlighter: rouge
 kramdown:
   input: GFM
   smart_quotes: ["apos", "apos", "quot", "quot"]
+
+collections:
+  blog_posts:
+    output: true
+    permalink: /blog/post/:name.html
