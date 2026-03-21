@@ -6,6 +6,8 @@ author: ShareX Team
 github: https://github.com/ShareX/XerahS
 twitter: ShareX
 
+future: true
+
 encoding: utf-8
 markdown: kramdown
 highlighter: rouge
