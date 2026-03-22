@@ -429,6 +429,24 @@
         // ─────────────────────────────────────────
         const repo = 'ShareX/XerahS';
 
+        function isPublicReleaseAsset(name) {
+            if (!name) return false;
+
+            const lower = name.toLowerCase();
+
+            // Exclude build/debug artifacts that should not be surfaced as end-user downloads.
+            if (lower.endsWith('.wixpdb') || lower.endsWith('.pdb') || lower.endsWith('.symbols.nupkg')) {
+                return false;
+            }
+
+            return lower.endsWith('.exe') ||
+                lower.endsWith('.msi') ||
+                lower.endsWith('.tar.gz') ||
+                lower.endsWith('.deb') ||
+                lower.endsWith('.rpm') ||
+                lower.endsWith('.nupkg');
+        }
+
         async function fetchReleases() {
             const loadingEl = document.getElementById('releases-loading');
             const listEl = document.getElementById('releases-list');
@@ -503,6 +521,9 @@
 
                     const isLatest = index === 0;
                     const isPrerelease = release.prerelease;
+                    const displayAssets = release.assets
+                        .filter(asset => isPublicReleaseAsset(asset.name))
+                        .sort((a, b) => b.download_count - a.download_count);
 
                     html += `
                         <div class="release-card card">
@@ -526,7 +547,7 @@
                                 <i class="fa-solid fa-chevron-down release-expand-icon"></i>
                             </div>
                             <div class="release-assets">
-                                ${release.assets.sort((a, b) => b.download_count - a.download_count).map(asset => `
+                                ${displayAssets.map(asset => `
                                     <a href="${asset.browser_download_url}" class="asset-item">
                                         <span class="asset-name"><i class="fa-solid fa-file"></i> ${escapeHtml(asset.name)}</span>
                                         <div class="asset-meta">

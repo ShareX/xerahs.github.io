@@ -259,11 +259,16 @@
                         <span class="platform-card-name">Windows</span>
                         <div class="platform-card-versions">
                             <a href="https://github.com/ShareX/XerahS/releases/latest" class="platform-card-version"
-                                data-download-target="win-x64">x64
-                                Installer</a>
+                                data-download-target="win-x64-exe">x64 EXE</a>
                             <a href="https://github.com/ShareX/XerahS/releases/latest"
-                                data-download-target="win-arm64"
-                                class="platform-card-version">ARM64 Installer</a>
+                                data-download-target="win-x64-msi"
+                                class="platform-card-version">x64 MSI</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest"
+                                data-download-target="win-arm64-exe"
+                                class="platform-card-version">ARM64 EXE</a>
+                            <a href="https://github.com/ShareX/XerahS/releases/latest"
+                                data-download-target="win-arm64-msi"
+                                class="platform-card-version">ARM64 MSI</a>
                         </div>
                     </div>
 
@@ -426,12 +431,20 @@
             const releaseApiUrl = 'https://api.github.com/repos/ShareX/XerahS/releases/latest';
             const downloadConfigs = [
                 {
-                    selector: '[data-download-target="win-x64"]',
+                    selector: '[data-download-target="win-x64-exe"]',
                     matcher: (name) => name.startsWith('xerahs') && name.includes('win-x64') && name.endsWith('.exe')
                 },
                 {
-                    selector: '[data-download-target="win-arm64"]',
+                    selector: '[data-download-target="win-x64-msi"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('win-x64') && name.endsWith('.msi')
+                },
+                {
+                    selector: '[data-download-target="win-arm64-exe"]',
                     matcher: (name) => name.startsWith('xerahs') && name.includes('win-arm64') && name.endsWith('.exe')
+                },
+                {
+                    selector: '[data-download-target="win-arm64-msi"]',
+                    matcher: (name) => name.startsWith('xerahs') && name.includes('win-arm64') && name.endsWith('.msi')
                 },
                 {
                     selector: '[data-download-target="mac-x64"]',
