@@ -1,0 +1,174 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Viewer - XerahS</title>
+    <meta name="description" content="Dynamic markdown proposal renderer for XerahS proposal documents.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="icon" href="/favicon.ico">
+
+    <style>
+        .proposal-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .proposal-wrap h1,
+        .proposal-wrap h2,
+        .proposal-wrap h3 {
+            margin-top: 1.2em;
+        }
+
+        .proposal-wrap p,
+        .proposal-wrap li {
+            color: var(--foreground-muted);
+            line-height: 1.7;
+        }
+
+        .proposal-wrap pre {
+            overflow-x: auto;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-default);
+        }
+
+        .proposal-wrap code {
+            font-family: var(--font-mono);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    {% include navbar.html %}
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content animate-on-scroll">
+                    <h1 id="proposal-title" class="page-title gradient-text">Loading proposal...</h1>
+                    <p class="page-subtitle"><a href="/dev/proposals.html">Back to proposal index</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container">
+                <article id="proposal-content" class="proposal-wrap">
+                    Loading markdown...
+                </article>
+            </div>
+        </section>
+    </main>
+
+    {% include footer.html %}
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        function getParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                folder: (params.get("folder") || "").toLowerCase(),
+                file: params.get("file") || ""
+            };
+        }
+
+        function rawUrl(folder, file) {
+            return `https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/proposals/${folder}/${file}`;
+        }
+
+        function githubBlobUrl(folder, file) {
+            return `https://github.com/ShareX/XerahS/blob/develop/docs/proposals/${folder}/${file}`;
+        }
+
+        async function loadProposal() {
+            const titleEl = document.getElementById("proposal-title");
+            const contentEl = document.getElementById("proposal-content");
+            const { folder, file } = getParams();
+
+            if (!folder || !file || !file.toLowerCase().endsWith(".md")) {
+                titleEl.textContent = "Invalid proposal";
+                contentEl.innerHTML = "Missing or invalid query parameters.";
+                return;
+            }
+
+            titleEl.textContent = file.replace(/\.md$/i, "");
+            try {
+                const response = await fetch(rawUrl(folder, file));
+                if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+                const markdown = await response.text();
+                contentEl.innerHTML = marked.parse(markdown);
+                contentEl.innerHTML += `<p><a href="${githubBlobUrl(folder, file)}" target="_blank" rel="noopener">View on GitHub</a></p>`;
+            } catch (error) {
+                contentEl.innerHTML = `Unable to load markdown: ${error.message}`;
+            }
+        }
+
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+
+        const navToggle = document.querySelector(".nav-toggle");
+        const navMobile = document.querySelector(".nav-mobile");
+        navToggle.addEventListener("click", () => {
+            const isActive = navToggle.classList.toggle("active");
+            navMobile.classList.toggle("active");
+            navToggle.setAttribute("aria-expanded", isActive);
+        });
+
+        const themeToggles = document.querySelectorAll(".theme-toggle");
+        const html = document.documentElement;
+        function getPreferredTheme() {
+            return localStorage.getItem("theme") || "light";
+        }
+        function setTheme(theme) {
+            if (theme === "light") html.setAttribute("data-theme", "light");
+            else html.removeAttribute("data-theme");
+            localStorage.setItem("theme", theme);
+        }
+        setTheme(getPreferredTheme());
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener("click", () => {
+                const currentTheme = html.getAttribute("data-theme");
+                setTheme(currentTheme === "light" ? "dark" : "light");
+            });
+        });
+
+        loadProposal();
+    </script>
+</body>
+</html>
