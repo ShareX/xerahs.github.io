@@ -232,9 +232,12 @@
 }
 
 .nav-link {
+    display: inline-flex;
+    align-items: center;
     font-size: 0.875rem;
     color: var(--foreground-muted);
     text-decoration: none;
+    line-height: 1;
     transition: color var(--duration-fast) var(--ease-out);
 }
 
@@ -244,11 +247,21 @@
 
 .nav-dropdown {
     position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .nav-dropdown-trigger::after {
     content: " \25BE";
     font-size: 0.75em;
+}
+
+.nav-dropdown-trigger {
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
 }
 
 .nav-dropdown-menu {
@@ -271,8 +284,7 @@
     z-index: 1100;
 }
 
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu {
+.nav-dropdown.open .nav-dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);

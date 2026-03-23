@@ -12,7 +12,7 @@
             <a href="{{ site.baseurl }}/changelog.html" class="nav-link">Changelog</a>
             <a href="{{ site.baseurl }}/faq.html" class="nav-link">FAQ</a>
             <div class="nav-dropdown">
-                <a href="{{ site.baseurl }}/dev/proposals.html" class="nav-link nav-dropdown-trigger">Dev</a>
+                <button type="button" class="nav-link nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Dev</button>
                 <div class="nav-dropdown-menu">
                     <a href="{{ site.baseurl }}/blog.html" class="nav-dropdown-item">Blog</a>
                     <a href="{{ site.baseurl }}/dev/proposals.html#xip" class="nav-dropdown-item">XerahS Improvement Proposals</a>
@@ -55,3 +55,31 @@
         </div>
     </div>
 </nav>
+<script>
+    (function () {
+        const dropdown = document.querySelector(".nav-dropdown");
+        const trigger = document.querySelector(".nav-dropdown-trigger");
+        if (!dropdown || !trigger) return;
+
+        function closeDropdown() {
+            dropdown.classList.remove("open");
+            trigger.setAttribute("aria-expanded", "false");
+        }
+
+        trigger.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.toggle("open");
+            trigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!dropdown.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeDropdown();
+        });
+    })();
+</script>
