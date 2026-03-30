@@ -1,0 +1,214 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Proposals - XerahS</title>
+    <meta name="description" content="XerahS development proposals from XIP, IEIP, and VEIP rendered dynamically from GitHub.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="/css/tokens.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="icon" href="/favicon.ico">
+
+    <style>
+        .proposal-groups {
+            display: grid;
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .proposal-group {
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-default);
+            background: var(--surface);
+        }
+
+        .proposal-group h2 {
+            margin: 0 0 16px;
+            font-size: 1.25rem;
+        }
+
+        .wrapped-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .proposal-pill {
+            display: inline-flex;
+            gap: 8px;
+            align-items: baseline;
+            text-decoration: none;
+            color: var(--foreground);
+            border: 1px solid var(--border-default);
+            border-radius: 999px;
+            padding: 8px 14px;
+            background: rgba(94, 106, 210, 0.08);
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .proposal-pill:hover {
+            background: rgba(94, 106, 210, 0.16);
+            border-color: var(--border-accent);
+        }
+
+        .proposal-id {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .proposal-title {
+            font-size: 0.92rem;
+            color: var(--foreground-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    {% include navbar.html %}
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content animate-on-scroll">
+                    <h1 class="page-title gradient-text">VideoEditor Proposals</h1>
+                    <p class="page-subtitle">Dev &gt; Proposals &gt; VideoEditor</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container">
+                <div id="proposal-groups" class="proposal-groups">
+                    <div class="animate-on-scroll">Loading proposal indexes from GitHub...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include footer.html %}
+
+    <script>
+        const proposalGroups = [{ key: "veip", label: "VideoEditor" }];
+
+        function formatTitle(fileName) {
+            const noExt = fileName.replace(/\.md$/i, "");
+            const parts = noExt.split("-");
+            const rest = parts.slice(1).join(" ");
+            return (rest || noExt).replace(/[_-]/g, " ");
+        }
+
+        async function fetchFolder(folder) {
+            const url = `https://api.github.com/repos/ShareX/XerahS/contents/docs/proposals/${folder}?ref=develop`;
+            const response = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+            if (!response.ok) {
+                throw new Error(`Failed loading ${folder}: ${response.status}`);
+            }
+            const entries = await response.json();
+            const files = entries.filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".md"));
+            files.sort((a, b) => b.name.localeCompare(a.name));
+            return files;
+        }
+
+        function renderGroup(group, files) {
+            const html = files.map(file => {
+                const id = file.name.split("-")[0].toUpperCase();
+                const title = formatTitle(file.name);
+                const query = new URLSearchParams({ folder: group.key, file: file.name }).toString();
+                return `
+                    <a class="proposal-pill" href="/dev/proposal.html?${query}">
+                        <span class="proposal-id">${id}</span>
+                        <span class="proposal-title">${title}</span>
+                    </a>
+                `;
+            }).join("");
+
+            return `
+                <article class="proposal-group" id="${group.key}">
+                    <h2>Dev &gt; Proposals &gt; ${group.label}</h2>
+                    <div class="wrapped-list">
+                        ${html || "<span>No proposal files found.</span>"}
+                    </div>
+                </article>
+            `;
+        }
+
+        async function loadProposals() {
+            const root = document.getElementById("proposal-groups");
+            try {
+                const results = await Promise.all(proposalGroups.map(async group => ({
+                    group,
+                    files: await fetchFolder(group.key)
+                })));
+
+                root.innerHTML = results.map(item => renderGroup(item.group, item.files)).join("");
+            } catch (error) {
+                root.innerHTML = `<div>Unable to load proposals: ${error.message}</div>`;
+            }
+        }
+
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+
+        const navToggle = document.querySelector(".nav-toggle");
+        const navMobile = document.querySelector(".nav-mobile");
+        navToggle.addEventListener("click", () => {
+            const isActive = navToggle.classList.toggle("active");
+            navMobile.classList.toggle("active");
+            navToggle.setAttribute("aria-expanded", isActive);
+        });
+
+        const themeToggles = document.querySelectorAll(".theme-toggle");
+        const html = document.documentElement;
+        function getPreferredTheme() {
+            return localStorage.getItem("theme") || "light";
+        }
+        function setTheme(theme) {
+            if (theme === "light") html.setAttribute("data-theme", "light");
+            else html.removeAttribute("data-theme");
+            localStorage.setItem("theme", theme);
+        }
+        setTheme(getPreferredTheme());
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener("click", () => {
+                const currentTheme = html.getAttribute("data-theme");
+                setTheme(currentTheme === "light" ? "dark" : "light");
+            });
+        });
+
+        loadProposals();
+    </script>
+</body>
+</html>
