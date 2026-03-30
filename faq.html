@@ -151,7 +151,7 @@
         // ─────────────────────────────────────────
         // Fetch and render FAQ
         // ─────────────────────────────────────────
-        const faqUrl = 'https://raw.githubusercontent.com/ShareX/XerahS/develop/FAQ.md';
+        const faqUrl = 'https://raw.githubusercontent.com/ShareX/XerahS/develop/docs/FAQ.md';
         const contentEl = document.getElementById('faq-content');
 
         fetch(faqUrl)
@@ -166,7 +166,7 @@
                 contentEl.innerHTML = `
                     <div class="error-message">
                         <i class="fa-solid fa-exclamation-circle"></i>
-                        <span>Failed to load FAQ. <a href="https://github.com/ShareX/XerahS/blob/develop/FAQ.md" target="_blank">View on GitHub</a></span>
+                        <span>Failed to load FAQ. <a href="https://github.com/ShareX/XerahS/blob/develop/docs/FAQ.md" target="_blank">View on GitHub</a></span>
                     </div>
                 `;
             });
