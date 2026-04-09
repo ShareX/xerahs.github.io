@@ -354,7 +354,7 @@
                 if (postsByDay.has(day)) {
                     const post = postsByDay.get(day);
                     const link = document.createElement('a');
-                    link.href = `blog/post/${post.date}.html`;
+                    link.href = `/blog/post/${post.date}.html`;
                     link.className = 'blog-calendar-entry';
                     link.dataset.date = post.date;
                     link.innerHTML = `<i class="fa-solid fa-file-lines"></i><span>Daily blog</span>`;
