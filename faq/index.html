@@ -18,12 +18,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/tokens.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/tokens.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/animations.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/components.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/layout.css">
 
-    <link rel="icon" href="../favicon.ico">
+    <link rel="icon" href="{{ site.baseurl }}/favicon.ico">
 </head>
 
 <body>
@@ -126,7 +126,7 @@
         function getPreferredTheme() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) return savedTheme;
-            return 'light'; // Default to light mode
+            return 'light';
         }
 
         function setTheme(theme) {

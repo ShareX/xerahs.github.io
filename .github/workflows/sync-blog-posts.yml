@@ -1,0 +1,34 @@
+name: Sync Blog Posts
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            _blog_posts
+            scripts
+            .github
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync blog posts from XerahS repo
+        run: node scripts/update-blog-posts.mjs
+
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add _blog_posts/
+          git diff --staged --quiet || git commit -m '[自动化] Sync blog posts from XerahS repo'
+          git push

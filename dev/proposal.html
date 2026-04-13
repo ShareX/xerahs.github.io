@@ -72,7 +72,7 @@
             <div class="container">
                 <div class="page-header-content animate-on-scroll">
                     <h1 id="proposal-title" class="page-title gradient-text">Loading proposal...</h1>
-                    <p class="page-subtitle"><a href="/dev/proposals.html">Back to proposal index</a></p>
+                    <p class="page-subtitle"><a href="#" id="back-link">Back to proposal index</a></p>
                 </div>
             </div>
         </section>
@@ -118,6 +118,7 @@
             }
 
             titleEl.textContent = file.replace(/\.md$/i, "");
+            document.getElementById("back-link").href = `/dev/proposals-${folder}.html`;
             try {
                 const response = await fetch(rawUrl(folder, file));
                 if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
