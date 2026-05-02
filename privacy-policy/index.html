@@ -66,47 +66,63 @@
                 <div class="card animate-on-scroll">
                     <div class="spotlight"></div>
                     <div class="privacy-content">
-                        <p>This Privacy Policy applies to the XerahS website at <a href="https://xerahs.com">https://xerahs.com</a> and to XerahS Android, published by ShareX Team.</p>
+                        <p>This Privacy Policy applies to the XerahS website at <a href="https://xerahs.com">https://xerahs.com</a> and to XerahS mobile apps for Android, iOS, and iPadOS, published by ShareX Team.</p>
 
-                        <p>XerahS is a file sharing and productivity app. The Android app uploads only the files, text, URLs, media, and configuration files that you select in the app or share to the app through Android.</p>
+                        <p>XerahS is a file sharing and productivity app. The mobile apps upload only the files, text, URLs, media, and configuration files that you select in the app or share to the app through the operating system share sheet or document picker.</p>
 
                         <h2>Contact</h2>
 
                         <p>Privacy contact: <a href="mailto:support@getsharex.com">support@getsharex.com</a></p>
 
-                        <h2>Data XerahS Android Accesses</h2>
+                        <h2>Data XerahS Mobile Apps Access</h2>
 
                         <p>XerahS Android can access files, images, videos, audio, text, URLs, and <code>.sxcu</code> or <code>.xsdc</code> configuration files that you select in the app or share to the app through Android. The app also stores upload configuration that you enter, including S3-compatible storage settings and custom uploader settings.</p>
 
                         <p>XerahS Android does not request camera, microphone, location, contacts, SMS, phone, notification, or broad external storage permissions.</p>
 
+                        <p>XerahS for iOS and iPadOS can access files, images, videos, text, URLs, and <code>.sxcu</code> or <code>.xsdc</code> configuration files that you select in the app, open with the app, or share to the app through iOS or iPadOS. The iOS share extension can receive user-selected files, images, and videos from compatible apps and pass them to XerahS for upload processing.</p>
+
+                        <p>XerahS for iOS and iPadOS does not request camera, microphone, location, contacts, or full photo-library access. The current iOS privacy manifests declare no tracking and no collected data types, and declare App Group <code>UserDefaults</code> access for shared app and share-extension settings.</p>
+
                         <h2>Uploads and Third-Party Destinations</h2>
 
-                        <p>When you start an upload, XerahS Android transmits the selected content to the upload destination that you configure. Supported destinations can include S3-compatible storage and custom uploader endpoints. These destinations are controlled by you or by third-party providers, not by ShareX Team by default.</p>
+                        <p>When you start an upload, XerahS transmits the selected content to the upload destination that you configure. Supported destinations can include S3-compatible storage and custom uploader endpoints. These destinations are controlled by you or by third-party providers, not by ShareX Team by default.</p>
 
-                        <p>Custom uploaders can send files, text, URLs, headers, parameters, request bodies, and authentication values to the endpoint configured in the uploader. Only import custom uploaders from sources you trust. XerahS Android rejects HTTP upload endpoints and requires HTTPS for custom uploader requests.</p>
+                        <p>Custom uploaders can send files, text, URLs, headers, parameters, request bodies, and authentication values to the endpoint configured in the uploader. Only import custom uploaders from sources you trust. XerahS mobile apps are designed to use HTTPS for supported upload and remote import flows.</p>
 
-                        <p>XerahS Android does not sell user data.</p>
+                        <p>XerahS does not sell user data.</p>
 
-                        <h2>Local Storage in XerahS Android</h2>
+                        <h2>Local Storage in XerahS Mobile Apps</h2>
 
                         <p>XerahS Android stores settings, encrypted sensitive upload configuration, upload history, and temporary shared files in app-private Android storage. Settings and history are excluded from Android backup and device transfer. Temporary shared files are removed after upload processing where possible and stale cache files are cleaned up automatically.</p>
+
+                        <p>XerahS for iOS and iPadOS stores settings, upload history, queued share-extension items, and temporary upload files in app-private storage or the XerahS App Group container so the main app and share extension can complete user-requested uploads. Sensitive S3 and custom uploader values are stored in the iOS Keychain.</p>
 
                         <h2>Security</h2>
 
                         <p>Sensitive S3 and custom uploader values are encrypted with Android Keystore-backed storage before being written to app settings. Network upload and remote import flows are HTTPS-only for successful supported configurations.</p>
 
+                        <p>On iOS and iPadOS, sensitive S3 and custom uploader values are stored in Keychain rather than plain settings files. The app also relies on Apple's app sandbox and App Group controls to limit access to app and share-extension data.</p>
+
                         <p>No method of transmission or storage is perfectly secure, so we cannot guarantee absolute security.</p>
+
+                        <h2>Store Privacy Disclosures</h2>
+
+                        <p>Google Play Data Safety and Apple App Store privacy answers must match the behavior of each submitted build. For XerahS mobile apps, user-selected files, photos, videos, audio, text, URLs, upload metadata, and configuration data may need to be disclosed when they are transmitted to user-configured third-party destinations for app functionality.</p>
+
+                        <p>The current iOS app and share extension privacy manifests declare no tracking and no collected data types, while declaring required-reason API use for shared <code>UserDefaults</code>. If XerahS adds analytics, advertising, additional SDKs, account systems, diagnostics collection, or new data transfers later, the privacy manifests, App Store privacy answers, Play Data Safety answers, and this policy must be updated before release.</p>
 
                         <h2>Retention and Deletion</h2>
 
-                        <p>Settings remain on the device until you change them, reset settings, or uninstall the app. Upload history remains on the device until you delete individual history items, clear history, reset settings, or uninstall the app. Temporary shared files are retained only temporarily in cache.</p>
+                        <p>Settings remain on the device until you change them, reset settings, or uninstall the app. Upload history remains on the device until you delete individual history items, clear history, reset settings, or uninstall the app. Temporary shared files and queued share-extension items are retained only temporarily for upload processing.</p>
 
-                        <p>Deleting local settings or history in XerahS Android does not delete files already uploaded to a third-party destination. Deletion from those services depends on the provider and on your destination configuration.</p>
+                        <p>Deleting local settings or history in XerahS does not delete files already uploaded to a third-party destination. Deletion from those services depends on the provider and on your destination configuration.</p>
 
                         <h2>Clipboard</h2>
 
                         <p>XerahS Android can read clipboard content only when you use an explicit import action, such as importing <code>.sxcu</code> JSON from the clipboard. The app can copy uploaded URLs to the clipboard after upload actions so you can paste the result.</p>
+
+                        <p>XerahS for iOS and iPadOS can read clipboard content only when you use an explicit import action. The iOS app and share extension can copy uploaded URLs or user-requested details to the clipboard after upload and import actions so you can paste the result.</p>
 
                         <h2>Website Data</h2>
 
