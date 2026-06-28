@@ -394,6 +394,88 @@ section {
 }
 
 /* ─────────────────────────────────────────
+   macOS GATEKEEPER TROUBLESHOOTING
+   ───────────────────────────────────────── */
+
+.macos-troubleshooting-wrap {
+    max-width: 640px;
+    margin: var(--space-10) auto 0;
+}
+
+.macos-troubleshooting-section .macos-troubleshooting-wrap {
+    margin-top: 0;
+}
+
+.macos-troubleshooting-section {
+    padding-bottom: var(--space-4);
+}
+
+.macos-troubleshooting {
+    padding: 0;
+    overflow: hidden;
+}
+
+.macos-troubleshooting:hover {
+    transform: none;
+}
+
+.macos-troubleshooting-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-6);
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.9375rem;
+    font-weight: var(--font-semibold);
+    color: var(--foreground);
+    position: relative;
+    z-index: 2;
+    user-select: none;
+}
+
+.macos-troubleshooting-summary::-webkit-details-marker {
+    display: none;
+}
+
+.macos-troubleshooting-summary .fa-apple {
+    color: var(--foreground-muted);
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+.macos-troubleshooting-summary span {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.macos-troubleshooting-chevron {
+    color: var(--foreground-muted);
+    font-size: 0.75rem;
+    transition: transform var(--duration-normal) var(--ease-out);
+    flex-shrink: 0;
+}
+
+.macos-troubleshooting[open] .macos-troubleshooting-chevron {
+    transform: rotate(180deg);
+}
+
+.macos-troubleshooting-body {
+    position: relative;
+    z-index: 2;
+    padding: 0 var(--space-6) var(--space-6);
+    border-top: 1px solid var(--border-default);
+}
+
+.macos-troubleshooting-body p:first-child {
+    margin-top: var(--space-5);
+}
+
+.macos-troubleshooting-body pre {
+    margin: var(--space-3) 0 var(--space-2);
+}
+
+/* ─────────────────────────────────────────
    FOOTER
    ───────────────────────────────────────── */
 
