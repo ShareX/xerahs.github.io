@@ -145,6 +145,25 @@
         <section class="releases-section section-padding">
             <div class="container">
                 <div class="releases-container">
+                    <div class="releases-filter">
+                        <label class="releases-filter-label" for="release-repo">Repository</label>
+                        <div class="releases-filter-controls">
+                            <select id="release-repo" class="releases-filter-select">
+                                <option value="ShareX/XerahS">ShareX/XerahS</option>
+                                <option value="KovaForge/XerahS">KovaForge/XerahS</option>
+                                <option value="all">All repositories</option>
+                                <option value="custom">Any repository…</option>
+                            </select>
+                            <form id="release-repo-custom" class="releases-filter-custom" hidden>
+                                <input id="release-repo-input" type="text" inputmode="text"
+                                    placeholder="owner/repo" autocomplete="off" spellcheck="false"
+                                    aria-label="GitHub repository as owner/repo">
+                                <button type="submit" class="btn btn-secondary">Show</button>
+                            </form>
+                        </div>
+                        <p class="releases-filter-hint" id="release-repo-hint"></p>
+                        <p class="releases-filter-error" id="release-repo-error" hidden></p>
+                    </div>
                     <div class="releases-loading" id="releases-loading">
                         <i class="fa-solid fa-spinner fa-spin"></i>
                         <span>Loading releases...</span>
@@ -393,6 +412,15 @@
         }
 
         function initCharts(osStats, archStats) {
+            if (downloadsChart) {
+                downloadsChart.destroy();
+                downloadsChart = null;
+            }
+            if (archChart) {
+                archChart.destroy();
+                archChart = null;
+            }
+
             if (typeof Chart === 'undefined') {
                 console.error('Chart.js library not loaded');
                 return;
@@ -436,7 +464,11 @@
         // ─────────────────────────────────────────
         // Fetch releases from GitHub
         // ─────────────────────────────────────────
-        const repos = ['ShareX/XerahS', 'KovaForge/XerahS'];
+        const knownRepos = ['ShareX/XerahS', 'KovaForge/XerahS'];
+        const defaultRepo = 'ShareX/XerahS';
+        const repoSlugPattern = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
+        const releaseCache = new Map();
+        let loadToken = 0;
 
         function isPublicReleaseAsset(name) {
             if (!name) return false;
@@ -456,7 +488,96 @@
                 lower.endsWith('.nupkg');
         }
 
+        function isRepoSlug(value) {
+            return repoSlugPattern.test(value);
+        }
+
+        function canonicalRepo(value) {
+            const match = knownRepos.find(repo => repo.toLowerCase() === value.toLowerCase());
+            return match || value;
+        }
+
+        function readSelectionFromUrl() {
+            const raw = new URLSearchParams(window.location.search).get('repo');
+            const value = (raw || '').trim();
+            if (!value) return { mode: 'repo', repo: defaultRepo };
+            if (value.toLowerCase() === 'all') return { mode: 'all' };
+            if (isRepoSlug(value)) return { mode: 'repo', repo: canonicalRepo(value) };
+            return { mode: 'repo', repo: defaultRepo };
+        }
+
+        function writeSelectionToUrl(selection) {
+            const url = new URL(window.location.href);
+            if (selection.mode === 'all') {
+                url.searchParams.set('repo', 'all');
+            } else if (selection.repo === defaultRepo) {
+                url.searchParams.delete('repo');
+            } else {
+                url.searchParams.set('repo', selection.repo);
+            }
+            history.replaceState(null, '', url);
+        }
+
+        function selectionLabel(selection) {
+            return selection.mode === 'all' ? 'all repositories' : selection.repo;
+        }
+
+        function setFilterHint(selection) {
+            const hintEl = document.getElementById('release-repo-hint');
+            if (!hintEl) return;
+
+            hintEl.replaceChildren();
+            hintEl.append('Showing releases from ');
+
+            const repos = selection.mode === 'all' ? knownRepos : [selection.repo];
+            repos.forEach((repo, index) => {
+                if (index > 0) hintEl.append(' and ');
+                const link = document.createElement('a');
+                link.href = `https://github.com/${repo}/releases`;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.textContent = repo;
+                hintEl.append(link);
+            });
+            hintEl.append('.');
+        }
+
+        function setFilterError(message) {
+            const errorEl = document.getElementById('release-repo-error');
+            if (!errorEl) return;
+            errorEl.hidden = !message;
+            errorEl.textContent = message || '';
+        }
+
+        function syncFilterControls(selection) {
+            const selectEl = document.getElementById('release-repo');
+            const customForm = document.getElementById('release-repo-custom');
+            const inputEl = document.getElementById('release-repo-input');
+            if (!selectEl || !customForm || !inputEl) return;
+
+            const known = selection.mode === 'repo'
+                ? knownRepos.find(repo => repo.toLowerCase() === selection.repo.toLowerCase())
+                : null;
+
+            if (selection.mode === 'all') {
+                selectEl.value = 'all';
+                customForm.hidden = true;
+            } else if (known) {
+                selectEl.value = known;
+                customForm.hidden = true;
+            } else {
+                selectEl.value = 'custom';
+                customForm.hidden = false;
+                inputEl.value = selection.repo;
+            }
+
+            setFilterHint(selection);
+            setFilterError('');
+        }
+
         async function fetchRepoReleases(repo) {
+            if (releaseCache.has(repo)) return releaseCache.get(repo);
+
             let releases = [];
             let page = 1;
             const perPage = 100;
@@ -465,137 +586,227 @@
                 const response = await fetch(
                     `https://api.github.com/repos/${repo}/releases?per_page=${perPage}&page=${page}`
                 );
-                if (!response.ok) throw new Error(`Failed to fetch ${repo}`);
+                if (!response.ok) throw new Error(`Failed to fetch ${repo} (${response.status})`);
 
                 const pageReleases = await response.json();
                 if (!Array.isArray(pageReleases) || pageReleases.length === 0) break;
 
-                releases = releases.concat(pageReleases);
+                releases = releases.concat(pageReleases.map(release => ({ ...release, sourceRepo: repo })));
                 if (pageReleases.length < perPage) break;
                 page++;
             }
 
+            releaseCache.set(repo, releases);
             return releases;
         }
 
-        async function fetchReleases() {
+        function resetReleaseLoading() {
             const loadingEl = document.getElementById('releases-loading');
             const listEl = document.getElementById('releases-list');
             const totalEl = document.querySelector('.total-downloads-value');
 
-            try {
-                const releasesByRepo = await Promise.all(repos.map(fetchRepoReleases));
-                const allReleases = releasesByRepo.flat();
+            if (listEl) listEl.innerHTML = '';
+            if (totalEl) {
+                totalEl.innerHTML = '';
+                const spinner = document.createElement('i');
+                spinner.className = 'fa-solid fa-spinner fa-spin';
+                totalEl.append(spinner);
+            }
+            if (loadingEl) {
+                loadingEl.style.display = '';
+                loadingEl.innerHTML = '';
+                const spinner = document.createElement('i');
+                spinner.className = 'fa-solid fa-spinner fa-spin';
+                const label = document.createElement('span');
+                label.textContent = 'Loading releases...';
+                loadingEl.append(spinner, label);
+            }
+        }
 
-                // Sort by date
-                allReleases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+        function renderReleases(allReleases) {
+            const loadingEl = document.getElementById('releases-loading');
+            const listEl = document.getElementById('releases-list');
+            const totalEl = document.querySelector('.total-downloads-value');
 
-                let totalDownloads = 0;
-                let osStats = { windows: 0, mac: 0, linux: 0 };
-                let archStats = { x64: 0, arm64: 0 };
-                let previousDate = new Date();
-                let html = '';
+            allReleases.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
 
-                allReleases.forEach((release, index) => {
-                    if (!release.assets || !Array.isArray(release.assets) || release.assets.length === 0) return;
+            let totalDownloads = 0;
+            let osStats = { windows: 0, mac: 0, linux: 0 };
+            let archStats = { x64: 0, arm64: 0 };
+            let previousDate = new Date();
+            let html = '';
+            let renderedCount = 0;
 
-                    let releaseDownloads = 0;
-                    
-                    release.assets.forEach(asset => {
-                        const count = asset.download_count || 0;
-                        releaseDownloads += count;
-                        
-                        if (!asset.name) return;
-                        const name = asset.name.toLowerCase();
-                        
-                        // OS Categorization
-                        if (name.includes('mac') || name.includes('darwin') || name.includes('.dmg') || name.includes('.pkg')) {
-                            osStats.mac += count;
-                        } else if (name.includes('linux') || name.includes('.deb') || name.includes('.rpm') || name.includes('.appimage')) {
-                            osStats.linux += count;
-                        } else if (name.includes('windows') || name.includes('win') || name.includes('.exe') || name.includes('.msi') || name.includes('portable')) {
-                            osStats.windows += count;
-                        }
+            allReleases.forEach((release) => {
+                if (!release.assets || !Array.isArray(release.assets) || release.assets.length === 0) return;
 
-                        // Architecture Categorization
-                        if (name.includes('arm64') || name.includes('aarch64')) {
-                            archStats.arm64 += count;
-                        } else if (name.includes('x64') || name.includes('x86_64') || name.includes('amd64') || name.includes('win64')) {
-                            archStats.x64 += count;
-                        } else {
-                            if (!name.includes('arm')) {
-                                archStats.x64 += count;
-                            }
-                        }
-                    });
+                let releaseDownloads = 0;
 
-                    totalDownloads += releaseDownloads;
+                release.assets.forEach(asset => {
+                    const count = asset.download_count || 0;
+                    releaseDownloads += count;
 
-                    const publishedDate = new Date(release.published_at);
-                    const activeDays = ((previousDate - publishedDate) / (1000 * 60 * 60 * 24)).toFixed(1);
-                    previousDate = publishedDate;
+                    if (!asset.name) return;
+                    const name = asset.name.toLowerCase();
 
-                    const isLatest = index === 0;
-                    const isPrerelease = release.prerelease;
-                    const displayAssets = release.assets
-                        .filter(asset => isPublicReleaseAsset(asset.name))
-                        .sort((a, b) => b.download_count - a.download_count);
+                    // OS Categorization
+                    if (name.includes('mac') || name.includes('darwin') || name.includes('.dmg') || name.includes('.pkg')) {
+                        osStats.mac += count;
+                    } else if (name.includes('linux') || name.includes('.deb') || name.includes('.rpm') || name.includes('.appimage')) {
+                        osStats.linux += count;
+                    } else if (name.includes('windows') || name.includes('win') || name.includes('.exe') || name.includes('.msi') || name.includes('portable')) {
+                        osStats.windows += count;
+                    }
 
-                    html += `
-                        <div class="release-card card">
-                            <div class="spotlight"></div>
-                            <div class="release-header" onclick="this.parentElement.classList.toggle('expanded')">
-                                <div class="release-info">
-                                    <div class="release-title-row">
-                                        <h3 class="release-name">${escapeHtml(release.name)}</h3>
-                                        <div class="release-badges">
-                                            ${isLatest ? '<span class="release-badge release-badge-latest">Latest</span>' : ''}
-                                            ${isPrerelease ? '<span class="release-badge release-badge-prerelease">Pre-release</span>' : ''}
-                                        </div>
-                                    </div>
-                                    <div class="release-meta">
-                                        <span class="release-tag"><i class="fa-solid fa-tag"></i> ${escapeHtml(release.tag_name)}</span>
-                                        <span class="release-date"><i class="fa-solid fa-calendar"></i> ${publishedDate.toLocaleDateString('en-CA')}</span>
-                                        <span class="release-days"><i class="fa-solid fa-clock"></i> ${activeDays} days</span>
-                                        <span class="release-downloads"><i class="fa-solid fa-download"></i> ${releaseDownloads.toLocaleString()}</span>
-                                    </div>
-                                </div>
-                                <i class="fa-solid fa-chevron-down release-expand-icon"></i>
-                            </div>
-                            <div class="release-assets">
-                                ${displayAssets.map(asset => `
-                                    <a href="${asset.browser_download_url}" class="asset-item">
-                                        <span class="asset-name"><i class="fa-solid fa-file"></i> ${escapeHtml(asset.name)}</span>
-                                        <div class="asset-meta">
-                                            <span class="asset-size">${formatBytes(asset.size)}</span>
-                                            <span class="asset-downloads"><i class="fa-solid fa-download"></i> ${asset.download_count.toLocaleString()}</span>
-                                        </div>
-                                    </a>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
+                    // Architecture Categorization
+                    if (name.includes('arm64') || name.includes('aarch64')) {
+                        archStats.arm64 += count;
+                    } else if (name.includes('x64') || name.includes('x86_64') || name.includes('amd64') || name.includes('win64')) {
+                        archStats.x64 += count;
+                    } else if (!name.includes('arm')) {
+                        archStats.x64 += count;
+                    }
                 });
 
-                totalEl.textContent = totalDownloads.toLocaleString();
-                listEl.innerHTML = html;
-                loadingEl.style.display = 'none';
-                
-                // Initialize charts
-                initCharts(osStats, archStats);
+                totalDownloads += releaseDownloads;
 
+                const publishedDate = new Date(release.published_at);
+                const activeDays = ((previousDate - publishedDate) / (1000 * 60 * 60 * 24)).toFixed(1);
+                previousDate = publishedDate;
+
+                const isLatest = renderedCount === 0;
+                renderedCount++;
+                const isPrerelease = release.prerelease;
+                const sourceRepo = release.sourceRepo || '';
+                const displayAssets = release.assets
+                    .filter(asset => isPublicReleaseAsset(asset.name))
+                    .sort((a, b) => b.download_count - a.download_count);
+
+                html += `
+                    <div class="release-card card">
+                        <div class="spotlight"></div>
+                        <div class="release-header" onclick="this.parentElement.classList.toggle('expanded')">
+                            <div class="release-info">
+                                <div class="release-title-row">
+                                    <h3 class="release-name">${escapeHtml(release.name || release.tag_name || 'Release')}</h3>
+                                    <div class="release-badges">
+                                        ${isLatest ? '<span class="release-badge release-badge-latest">Latest</span>' : ''}
+                                        ${isPrerelease ? '<span class="release-badge release-badge-prerelease">Pre-release</span>' : ''}
+                                    </div>
+                                </div>
+                                <div class="release-meta">
+                                    <span class="release-repo"><i class="fa-brands fa-github"></i> ${escapeHtml(sourceRepo)}</span>
+                                    <span class="release-tag"><i class="fa-solid fa-tag"></i> ${escapeHtml(release.tag_name)}</span>
+                                    <span class="release-date"><i class="fa-solid fa-calendar"></i> ${publishedDate.toLocaleDateString('en-CA')}</span>
+                                    <span class="release-days"><i class="fa-solid fa-clock"></i> ${activeDays} days</span>
+                                    <span class="release-downloads"><i class="fa-solid fa-download"></i> ${releaseDownloads.toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down release-expand-icon"></i>
+                        </div>
+                        <div class="release-assets">
+                            ${displayAssets.map(asset => `
+                                <a href="${asset.browser_download_url}" class="asset-item">
+                                    <span class="asset-name"><i class="fa-solid fa-file"></i> ${escapeHtml(asset.name)}</span>
+                                    <div class="asset-meta">
+                                        <span class="asset-size">${formatBytes(asset.size)}</span>
+                                        <span class="asset-downloads"><i class="fa-solid fa-download"></i> ${asset.download_count.toLocaleString()}</span>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (totalEl) totalEl.textContent = totalDownloads.toLocaleString();
+            if (!html) {
+                listEl.innerHTML = `<div class="releases-empty">No releases found for ${escapeHtml(selectionLabel(currentSelection))}.</div>`;
+            } else {
+                listEl.innerHTML = html;
+            }
+            if (loadingEl) loadingEl.style.display = 'none';
+            initCharts(osStats, archStats);
+        }
+
+        let currentSelection = { mode: 'repo', repo: defaultRepo };
+
+        async function showSelection(selection) {
+            const token = ++loadToken;
+            currentSelection = selection;
+            syncFilterControls(selection);
+            resetReleaseLoading();
+
+            const loadingEl = document.getElementById('releases-loading');
+            const totalEl = document.querySelector('.total-downloads-value');
+
+            try {
+                const repos = selection.mode === 'all' ? knownRepos : [selection.repo];
+                const releasesByRepo = await Promise.all(repos.map(fetchRepoReleases));
+                if (token !== loadToken) return;
+
+                renderReleases(releasesByRepo.flat());
             } catch (error) {
+                if (token !== loadToken) return;
                 console.error(error);
                 if (totalEl) totalEl.textContent = 'Error';
                 showDiagnosticError('Failed to load release data from GitHub.', error.message || String(error));
-                
-                loadingEl.innerHTML = `
-                    <div class="error-message">
-                        <i class="fa-solid fa-exclamation-circle"></i>
-                        <span>Failed to load releases. The API request may have been rate-limited or failed. <br><span style="font-size: 0.8em; opacity: 0.8;">${error.message}</span></span>
-                    </div>
-                `;
+
+                if (loadingEl) {
+                    loadingEl.innerHTML = `
+                        <div class="error-message">
+                            <i class="fa-solid fa-exclamation-circle"></i>
+                            <span>Failed to load releases. The API request may have been rate-limited or failed. <br><span style="font-size: 0.8em; opacity: 0.8;">${escapeHtml(error.message || String(error))}</span></span>
+                        </div>
+                    `;
+                }
             }
+        }
+
+        function applySelection(selection) {
+            writeSelectionToUrl(selection);
+            showSelection(selection);
+        }
+
+        function bindReleaseFilter() {
+            const selectEl = document.getElementById('release-repo');
+            const customForm = document.getElementById('release-repo-custom');
+            const inputEl = document.getElementById('release-repo-input');
+            if (!selectEl || !customForm || !inputEl) return;
+
+            selectEl.addEventListener('change', () => {
+                const value = selectEl.value;
+                if (value === 'custom') {
+                    customForm.hidden = false;
+                    setFilterError('');
+                    if (!inputEl.value.trim()) {
+                        const hintEl = document.getElementById('release-repo-hint');
+                        if (hintEl) hintEl.textContent = 'Enter any GitHub repository as owner/repo.';
+                    }
+                    inputEl.focus();
+                    return;
+                }
+
+                customForm.hidden = true;
+                if (value === 'all') {
+                    applySelection({ mode: 'all' });
+                } else {
+                    applySelection({ mode: 'repo', repo: value });
+                }
+            });
+
+            customForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const repo = inputEl.value.trim();
+                if (!isRepoSlug(repo)) {
+                    setFilterError('Enter a GitHub repository as owner/repo.');
+                    inputEl.focus();
+                    return;
+                }
+
+                setFilterError('');
+                applySelection({ mode: 'repo', repo: canonicalRepo(repo) });
+            });
         }
 
         function escapeHtml(text) {
@@ -612,7 +823,10 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        fetchReleases();
+        bindReleaseFilter();
+        const initialSelection = readSelectionFromUrl();
+        writeSelectionToUrl(initialSelection);
+        showSelection(initialSelection);
     </script>
 </body>
 

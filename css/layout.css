@@ -806,6 +806,105 @@ footer {
     margin: 0 auto;
 }
 
+.releases-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.releases-filter-label {
+    font-size: 0.8125rem;
+    font-weight: var(--font-semibold);
+    color: var(--foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+}
+
+.releases-filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    flex: 1;
+}
+
+.releases-filter-select,
+.releases-filter-custom input {
+    background: var(--surface);
+    color: var(--foreground);
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-md);
+    padding: 0.55rem 0.85rem;
+    font: inherit;
+    font-size: 0.875rem;
+    color-scheme: dark;
+}
+
+[data-theme="light"] .releases-filter-select,
+[data-theme="light"] .releases-filter-custom input {
+    color-scheme: light;
+}
+
+.releases-filter-select {
+    min-width: 220px;
+}
+
+.releases-filter-select:focus-visible,
+.releases-filter-custom input:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 2px var(--background-base),
+        0 0 0 4px rgba(94, 106, 210, 0.5);
+}
+
+.releases-filter-custom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.releases-filter-custom[hidden] {
+    display: none;
+}
+
+.releases-filter-custom input {
+    min-width: 180px;
+}
+
+.releases-filter-custom .btn {
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+}
+
+.releases-filter-hint,
+.releases-filter-error {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--foreground-muted);
+}
+
+.releases-filter-hint a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.releases-filter-hint a:hover {
+    text-decoration: underline;
+}
+
+.releases-filter-error {
+    color: #ef4444;
+}
+
+.releases-empty {
+    padding: var(--space-10) var(--space-6);
+    text-align: center;
+    color: var(--foreground-muted);
+}
+
 .releases-loading {
     display: flex;
     flex-direction: column;
