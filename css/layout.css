@@ -851,6 +851,12 @@ footer {
     min-width: 220px;
 }
 
+/* Native option popups need an opaque background in both themes. */
+.releases-filter-select option {
+    background-color: var(--background-elevated);
+    color: var(--foreground);
+}
+
 .releases-filter-select:focus-visible,
 .releases-filter-custom input:focus-visible {
     outline: none;
