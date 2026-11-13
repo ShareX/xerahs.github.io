@@ -1,0 +1,197 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About XerahS</title>
+    <meta name="description" content="XerahS is the ShareX Team's experimental app: where we try cross-platform capture, new UI ideas and new features. ShareX remains our flagship product.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/tokens.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/animations.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/components.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/layout.css">
+
+    <link rel="icon" href="{{ site.baseurl }}/favicon.ico">
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════
+         BACKGROUND SYSTEM
+         ═══════════════════════════════════════ -->
+    <div class="background-system">
+        <div class="gradient-base"></div>
+        <div class="noise-overlay"></div>
+        <div class="blob blob-primary"></div>
+        <div class="blob blob-secondary"></div>
+        <div class="blob blob-tertiary"></div>
+        <div class="blob blob-bottom"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         ═══════════════════════════════════════ -->
+    {% include navbar.html %}
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <div class="page-header-content animate-on-scroll">
+                    <h1 class="page-title gradient-text">About XerahS</h1>
+                    <p class="page-subtitle">The ShareX Team's experimental app. ShareX remains our flagship.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section section-padding">
+            <div class="container container-narrow">
+                <div class="faq-container card">
+                    <div class="spotlight"></div>
+                    <div class="faq-content">
+
+                        <h2>ShareX and XerahS</h2>
+                        <p><a href="https://getsharex.com" target="_blank" rel="noopener"><strong>ShareX</strong></a> is our flagship product. It is a mature, dependable screen capture and file sharing tool for Windows, built over many years with help from its community.</p>
+                        <p><strong>XerahS</strong> is our experimental app, made by the same ShareX Team. It is where we try new technology, different approaches to the interface, and features that are not ready for ShareX, or may never suit it. Some ideas work out and some do not. XerahS is where we find out, so ShareX users don't have to.</p>
+                        <p>Both apps are free and open source under the GPL v3, and both always will be.</p>
+
+                        <h2>Which one should I use?</h2>
+                        <ul>
+                            <li><strong>Use ShareX</strong> if you are on Windows and want something stable that you can rely on every day.</li>
+                            <li><strong>Try XerahS</strong> if you are on Linux or macOS, or you want to try new ideas early and don't mind some rough edges.</li>
+                        </ul>
+                        <p>XerahS is pre-1.0, and the three platforms are at different stages. On Windows it comes closest to ShareX. On macOS it is usable, with some packaging and colour issues still open. On Linux, screenshots are solid on X11 and Wayland, but screen recording is still being worked on. The <a href="https://github.com/ShareX/XerahS#platform-status" target="_blank" rel="noopener">platform status</a> table in the README is kept up to date.</p>
+
+                        <h2>What we are experimenting with</h2>
+
+                        <h3>One app on Windows, Linux and macOS</h3>
+                        <p>XerahS is built on .NET 10 and Avalonia UI, so the same app runs on all three desktops. Each platform still captures the screen with its own fastest native method: Desktop Duplication on Windows, ScreenCaptureKit on macOS, and the desktop portal on Wayland, plus X11 support.</p>
+
+                        <h3>Different approaches to the interface</h3>
+                        <ul>
+                            <li><strong>Independent workflows.</strong> Each capture workflow has its own hotkey, tasks and settings, and none of them inherit from a hidden "default". There are no inheritance chains to untangle when something behaves unexpectedly.</li>
+                            <li><strong>A new image editor.</strong> Annotations are objects you can select, move, resize and restyle at any time. It has layers, more than 40 effects and GPU-accelerated rendering through Skia.</li>
+                            <li><strong>A video editor</strong> built on Omacut, a native Avalonia video trimmer.</li>
+                            <li><strong>Desktop-native capture</strong> on Linux, such as the OmaSnap capture engine and the <code>omaxerahs</code> command for the Omarchy (Hyprland) desktop.</li>
+                        </ul>
+
+                        <h3>Built for automation and AI agents</h3>
+                        <ul>
+                            <li>An <a href="../features/mcp-server.html">MCP server</a> that lets AI agents and editors capture, annotate, upload and search history through XerahS.</li>
+                            <li>A <a href="../features/cli.html">command-line interface</a> for scripts.</li>
+                            <li>An optional assistant that works with the AI provider you set up in Settings.</li>
+                            <li><a href="../features/plugins.html">Destination plugins</a>, so new upload services can ship separately from the app.</li>
+                        </ul>
+
+                        <h3>Privacy before upload</h3>
+                        <p>Privacy mode finds sensitive data in a capture and lets you redact it before anything is uploaded.</p>
+
+                        <h3>Mobile</h3>
+                        <p>Native apps for Android (Kotlin) and iOS (Swift) that upload files and receive content shared from other apps, alongside earlier .NET MAUI and Avalonia mobile experiments.</p>
+
+                        <h2>How XerahS is built</h2>
+                        <p>XerahS is also an experiment in how software is made. It is developed with agentic coding: AI coding agents write much of the code, and the ShareX Team directs and reviews the work. To make that safe, the codebase is strict by design. Nullable checks are on, every compiler warning is treated as an error, and thousands of automated tests run before a change is accepted.</p>
+                        <p>Larger changes start as public proposals. You can read them under Dev: <a href="../dev/proposals-xip.html">XerahS Improvement Proposals</a>, plus separate proposals for the image editor and the video editor.</p>
+                        <p>If you would rather use software built the traditional way, ShareX is developed by hand and has years of community testing behind it.</p>
+
+                        <h2>What this means for ShareX</h2>
+                        <p>XerahS gives us room to experiment without putting ShareX's stability at risk. Ideas that prove themselves here can inform ShareX, but ShareX keeps its own pace and its own bar for stability. Trying something in XerahS does not mean it will come to ShareX.</p>
+
+                        <h2>Get involved</h2>
+                        <ul>
+                            <li><a href="../downloads/">Download XerahS</a> and tell us what works and what doesn't.</li>
+                            <li>Report bugs and suggest features on <a href="https://github.com/ShareX/XerahS/issues" target="_blank" rel="noopener">GitHub</a>.</li>
+                            <li>Follow day-to-day progress on the <a href="../blog/">dev blog</a> and in the <a href="../changelog/">changelog</a>.</li>
+                            <li>Talk to the team on <a href="https://discord.gg/ShareX" target="_blank" rel="noopener">Discord</a>.</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include footer.html %}
+
+    <!-- ═══════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════ -->
+    <script>
+        // ─────────────────────────────────────────
+        // Scroll-triggered animations
+        // ─────────────────────────────────────────
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ─────────────────────────────────────────
+        // Mobile menu toggle
+        // ─────────────────────────────────────────
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMobile = document.querySelector('.nav-mobile');
+
+        navToggle.addEventListener('click', () => {
+            const isActive = navToggle.classList.toggle('active');
+            navMobile.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isActive);
+        });
+
+        // ─────────────────────────────────────────
+        // Theme toggle functionality
+        // ─────────────────────────────────────────
+        const themeToggles = document.querySelectorAll('.theme-toggle');
+        const html = document.documentElement;
+
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) return savedTheme;
+            return 'light';
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                html.setAttribute('data-theme', 'light');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(getPreferredTheme());
+
+        themeToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+        });
+
+    </script>
+</body>
+
+</html>
